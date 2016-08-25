@@ -1,0 +1,39 @@
+{
+  "name": "generator-app-app",
+  "version": "0.0.0",
+  "description": "App App!",
+  "homepage": "https://github.com/tiy-tpa-fee",
+  "author": {
+    "name": "Jason L Perry",
+    "email": "jason@theironyard.com",
+    "url": "https://github.com/ambethia"
+  },
+  "files": [
+    "generators"
+  ],
+  "main": "generators/index.js",
+  "keywords": [
+    "app",
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^0.23.0",
+    "chalk": "^1.0.0",
+    "yosay": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.1.1",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0"
+  },
+  "eslintConfig": {
+    "extends": "standard",
+    "env": {
+      "node": true
+    }
+  },
+  "repository": "tiy-tpa-fee/generator-app-app",
+  "scripts": {},
+  "license": "MIT"
+}
