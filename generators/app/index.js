@@ -46,7 +46,7 @@ class AppApp extends yeoman.Base {
 
       dotfiles () {
         this.fs.copy(
-          this.templatePath('.*'),
+          this.templatePath('dot/.*'),
           this.destinationRoot()
         )
       },
@@ -79,6 +79,15 @@ class AppApp extends yeoman.Base {
             title: this.props.name
           }
         )
+      },
+
+      readme () {
+        this.fs.copyTpl(
+          this.templatePath('README.md'),
+          this.destinationPath(), {
+            title: this.props.name
+          }
+        )
       }
     }
   }
@@ -104,6 +113,7 @@ class AppApp extends yeoman.Base {
       'sass-loader',
       'style-loader',
       'webpack',
+      'webpack-dashboard',
       'webpack-dev-server'
     ]
 
