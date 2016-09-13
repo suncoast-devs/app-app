@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dashboard -- webpack-dev-server -d --history-api-fallback --open --hot --inline --port 3000",
+    "start": "webpack-dev-server -d --history-api-fallback --open --hot --inline --port 3000",
     "deploy": "surge ./build"
   }
 }

@@ -113,7 +113,6 @@ class AppApp extends yeoman.Base {
       'sass-loader',
       'style-loader',
       'webpack',
-      'webpack-dashboard',
       'webpack-dev-server'
     ]
 

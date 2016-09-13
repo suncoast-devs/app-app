@@ -3,7 +3,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const DashboardPlugin = require('webpack-dashboard/plugin')
 
 const ROOT_PATH = path.resolve(__dirname)
 const SOURCE_PATH = path.resolve(ROOT_PATH, 'src')
@@ -23,8 +22,7 @@ module.exports = {
       template: path.resolve(SOURCE_PATH, 'index.html'),
       inject: 'body',
       filename: 'index.html'
-    }),
-    new DashboardPlugin()
+    })
   ],
   module: {
     loaders: [{
