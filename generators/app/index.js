@@ -44,10 +44,20 @@ class AppApp extends yeoman.Base {
         )
       },
 
-      dotfiles () {
+      dotFiles () {
         this.fs.copy(
-          this.templatePath('dot/.*'),
-          this.destinationRoot()
+          this.templatePath('dot/.babelrc'),
+          this.destinationPath('.babelrc')
+        )
+
+        this.fs.copy(
+          this.templatePath('dot/.eslintrc'),
+          this.destinationPath('.eslintrc')
+        )
+
+        this.fs.copy(
+          this.templatePath('dot/.gitignore'),
+          this.destinationPath('.gitignore')
         )
       },
 
@@ -84,7 +94,7 @@ class AppApp extends yeoman.Base {
       readme () {
         this.fs.copyTpl(
           this.templatePath('README.md'),
-          this.destinationPath(), {
+          this.destinationPath('README.md'), {
             title: this.props.name
           }
         )
@@ -94,6 +104,7 @@ class AppApp extends yeoman.Base {
 
   install () {
     const devDependencies = [
+      'autoprefixer',
       'babel-core',
       'babel-eslint',
       'babel-loader',
@@ -110,6 +121,7 @@ class AppApp extends yeoman.Base {
       'file-loader',
       'html-webpack-plugin',
       'node-sass',
+      'postcss-loader',
       'sass-loader',
       'style-loader',
       'webpack',
