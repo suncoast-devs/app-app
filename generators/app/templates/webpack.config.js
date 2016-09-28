@@ -3,7 +3,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const DashboardPlugin = require('webpack-dashboard/plugin')
+const autoprefixer = require('autoprefixer')
 
 const ROOT_PATH = path.resolve(__dirname)
 const SOURCE_PATH = path.resolve(ROOT_PATH, 'src')
@@ -15,7 +15,8 @@ module.exports = {
   ],
   output: {
     filename: 'bundle.js',
-    path: BUILD_PATH
+    path: BUILD_PATH,
+    publicPath: '/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -23,8 +24,7 @@ module.exports = {
       template: path.resolve(SOURCE_PATH, 'index.html'),
       inject: 'body',
       filename: 'index.html'
-    }),
-    new DashboardPlugin()
+    })
   ],
   module: {
     loaders: [{
@@ -33,10 +33,13 @@ module.exports = {
       loader: 'babel'
     }, {
       test: /\.(sass|scss)$/,
-      loaders: ['style', 'css', 'sass']
+      loaders: ['style', 'css', 'postcss', 'sass']
     }, {
       test: /\.(png|jpe?g|gif|svg|ttf|eot|otf|woff|woff2)$/,
       loader: 'file'
     }]
+  },
+  postcss: function () {
+    return [autoprefixer]
   }
 }
