@@ -2,7 +2,7 @@
   "name": "generator-app-app",
   "version": "1.2.0",
   "description": "App App!",
-  "homepage": "https://github.com/tiy-tpa-fee",
+  "homepage": "https://github.com/tiy-tpa-fee/",
   "author": {
     "name": "Jason L Perry",
     "email": "jason@theironyard.com",
@@ -17,9 +17,10 @@
     "yeoman-generator"
   ],
   "dependencies": {
-    "yeoman-generator": "^0.23.0",
     "chalk": "^1.0.0",
-    "yosay": "^1.0.0"
+    "empty-dir": "^0.2.1",
+    "lodash": "^4.16.4",
+    "yeoman-generator": "^0.23.0"
   },
   "devDependencies": {
     "eslint": "^3.1.1",
