@@ -4,6 +4,15 @@ const yeoman = require('yeoman-generator')
 const emptyDir = require('empty-dir')
 const chalk = require('chalk')
 
+const STACKS = {
+  alpha: 'A vanilla stack with HTML, CSS, linting, and BrowserSync',
+  beta: 'A vanilla stack with HTML, CSS, linting, JavaScript and BrowserSync',
+  gamma: '',
+  delta: '',
+  epsilon: '',
+  zeta: ''
+}
+
 class AppApp extends yeoman.Base {
 
   constructor (args, options) {
@@ -115,8 +124,8 @@ class AppApp extends yeoman.Base {
         }
 
         if (this.props.webpack) {
+          pkg.scripts.start = 'webpack-dev-server'
           pkg.scripts.build = 'rm -rf public && NODE_ENV=production webpack --optimize-minimize --progress --profile --colors'
-          pkg.scripts.start = 'webpack-dev-server -d --history-api-fallback --open --hot --inline --port 3000'
         } else {
           pkg.scripts.start = `browser-sync start --server 'public' --files 'public'`
         }
@@ -202,9 +211,10 @@ class AppApp extends yeoman.Base {
             this.props
           )
         } else if (this.props.eslint) {
-          this.fs.copy(
+          this.fs.copyTpl(
             this.templatePath('index.js'),
-            this.destinationPath(this.props.webpack ? 'src/index.js' : 'public/main.js')
+            this.destinationPath(this.props.webpack ? 'src/index.js' : 'public/main.js'),
+            this.props
           )
         }
       },
@@ -255,10 +265,11 @@ class AppApp extends yeoman.Base {
 
     if (this.props.webpack) {
       devDependencies.push(
-        'webpack',
-        'webpack-dev-server',
+        'webpack@beta',
+        'webpack-dev-server@beta',
         'webpack-merge',
         'webpack-validator',
+        'browser-sync-webpack-plugin',
         'html-webpack-plugin',
         'file-loader',
         'css-loader',

@@ -3,10 +3,11 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const validate = require('webpack-validator')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 const autoprefixer = require('autoprefixer')
 
 const ROOT_PATH = path.resolve(__dirname)
-const SRC_PATH = path.resolve(ROOT_PATH, 'client')
+const SRC_PATH = path.resolve(ROOT_PATH, 'src')
 const BUILD_PATH = path.resolve(ROOT_PATH, 'public')
 
 const common = {
@@ -20,7 +21,6 @@ const common = {
     publicPath: '/'
   },
   plugins: [
-    new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(SRC_PATH, 'index.html'),
       inject: 'body',
@@ -56,16 +56,24 @@ const common = {
 }
 
 const development = {
-  entry: [
-<% if ( react ) { %>    'react-hot-loader/patch',<% } %>
-    'webpack-hot-middleware/client?reload'
+  entry: [<% if ( react ) { %>
+    'react-hot-loader/patch',<% } %>
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/only-dev-server'
   ],
   output: {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   devtool: 'eval',
+  devServer: {
+    historyApiFallback: true,
+    hot: true,
+    inline: true,
+    stats: { colors: true, chunks: false }
+  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin({ multiStep: true })
+    new webpack.HotModuleReplacementPlugin({ multiStep: true }),
+    new BrowserSyncPlugin({ proxy: 'http://localhost:8080/' }, { reload: false })
   ]
 }
 

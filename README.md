@@ -66,6 +66,17 @@ yo app-app delta
 - Everything in the `delta` stack
 - Redux & React Router
 
+## TODO
+
+- [x] Alpha stack
+- [x] Beta stack
+- [ ] Gamma stack
+- [ ] Delta stack
+- [ ] Epsilon stack
+- [ ] Zeta stack
+- [ ] Vendor entry point and chunking
+- [ ] CLI lint and warnings before deploy
+
 ## License
 
 MIT &copy; [Jason L Perry](https://github.com/ambethia)
