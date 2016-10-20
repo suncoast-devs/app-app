@@ -7,10 +7,10 @@ const chalk = require('chalk')
 const STACKS = {
   alpha: 'A vanilla stack with HTML, CSS, linting, and BrowserSync',
   beta: 'A vanilla stack with HTML, CSS, linting, JavaScript and BrowserSync',
-  gamma: '',
-  delta: '',
-  epsilon: '',
-  zeta: ''
+  gamma: 'A webpack stack with Babel and SASS. No JavaScript frameworks.',
+  delta: 'A basic React Stack with React Router',
+  epsilon: 'A React Stack with MobX boilerplate',
+  zeta: 'A React Stack with Redux boilerplate'
 }
 
 class AppApp extends yeoman.Base {
@@ -43,7 +43,11 @@ class AppApp extends yeoman.Base {
     }]
 
     if (this.stack) {
-      this.log(chalk.yellow.bold(`Using ${this.stack.toUpperCase()} stack.`))
+      if (STACKS.hasOwnProperty(this.stack)) {
+        this.log(`Using ${chalk.yellow.bold(this.stack.toUpperCase())}: ${STACKS[this.stack]}`)
+      } else {
+        this.log(chalk.red.bold(`Unknown stack (${this.stack}). Supported stacks are: ${Object.keys(STACKS).join(', ')}`))
+      }
     }
 
     switch (this.stack) {
@@ -265,8 +269,8 @@ class AppApp extends yeoman.Base {
 
     if (this.props.webpack) {
       devDependencies.push(
-        'webpack@beta',
-        'webpack-dev-server@beta',
+        'webpack',
+        'webpack-dev-server',
         'webpack-merge',
         'webpack-validator',
         'browser-sync-webpack-plugin',

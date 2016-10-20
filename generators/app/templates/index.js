@@ -2,7 +2,14 @@
 import './styles/screen.sass'
 
 <% } %>const main = () => {
-  console.log('Hello, World!')
+  document.getElementById('root').textContent = 'Hello, World!'
 }
 
 document.addEventListener('DOMContentLoaded', main)
+<% if (webpack) { %>
+if (module.hot) {
+  module.hot.accept()
+  module.hot.accept('file!./index.html', () => {
+    window.location.reload()
+  })
+}<% } %>

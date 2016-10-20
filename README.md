@@ -70,7 +70,7 @@ yo app-app delta
 
 - [x] Alpha stack
 - [x] Beta stack
-- [ ] Gamma stack
+- [x] Gamma stack
 - [ ] Delta stack
 - [ ] Epsilon stack
 - [ ] Zeta stack

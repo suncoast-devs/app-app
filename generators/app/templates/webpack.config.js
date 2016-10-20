@@ -4,7 +4,6 @@ const merge = require('webpack-merge')
 const validate = require('webpack-validator')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
-const autoprefixer = require('autoprefixer')
 
 const ROOT_PATH = path.resolve(__dirname)
 const SRC_PATH = path.resolve(ROOT_PATH, 'src')
@@ -46,12 +45,14 @@ const common = {
         'style',
         'css?camelCase&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
         'postcss'<% if ( sass ) { %>,
-        'sass'<% } %>
-      ]
+        'sass'
+<% } %>      ]
     }]
   },
-  postcss: function () {
-    return [autoprefixer]
+  postcss: () => {
+    return [
+      require('autoprefixer')
+    ]
   }
 }
 
@@ -68,7 +69,6 @@ const development = {
   devServer: {
     historyApiFallback: true,
     hot: true,
-    inline: true,
     stats: { colors: true, chunks: false }
   },
   plugins: [
