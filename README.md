@@ -8,6 +8,12 @@ First, install [Yeoman](http://yeoman.io) and `generator-app-app` using [npm](ht
 npm install -g yo generator-app-app
 ```
 
+Optionally, install `tidy-html5`, and the [Tidy Linter](https://atom.io/packages/linter-tidy) for Atom:
+
+```bash
+brew install tidy-html5
+```
+
 Then generate your new project:
 
 ```bash

@@ -14,7 +14,6 @@ class AppApp extends yeoman.Base {
   prompting () {
     this.props = {
       stylelint: true,
-      htmlhint: true,
       eslint: true,
       react: true,
       webpack: true
@@ -160,6 +159,15 @@ class AppApp extends yeoman.Base {
         }
       },
 
+      styleLintRC () {
+        if (this.props.stylelint) {
+          const config = {
+            extends: 'stylelint-config-standard'
+          }
+          this.fs.writeJSON(this.destinationPath('.stylelintrc'), config)
+        }
+      },
+
       gitIgnore () {
         this.fs.copy(
           this.templatePath('gitignore'),
@@ -221,7 +229,9 @@ class AppApp extends yeoman.Base {
 
   install () {
     const devDependencies = [
-      'browser-sync'
+      'browser-sync',
+      'stylelint',
+      'stylelint-config-standard'
     ]
 
     if (this.props.eslint) {
