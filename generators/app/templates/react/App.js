@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import '../styles/screen.<%= styleExt %>'
 
 class App extends Component {
 

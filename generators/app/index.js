@@ -140,11 +140,13 @@ class AppApp extends yeoman.Base {
       babelRC () {
         if (this.props.babel) {
           const config = {
-            presets: ['es2015', 'stage-0']
+            presets: ['es2015', 'stage-0'],
+            plugins: []
           }
 
           if (this.props.react) {
             config.presets.push('react')
+            config.plugins.push('react-hot-loader/babel')
           }
 
           this.fs.writeJSON(this.destinationPath('.babelrc'), config)
@@ -204,15 +206,15 @@ class AppApp extends yeoman.Base {
 
       scripts () {
         if (this.props.react) {
-          this.fs.copy(
+          this.fs.copyTpl(
             this.templatePath('react/index.js'),
-            this.destinationPath('src/index.js')
+            this.destinationPath('src/index.js'),
+            this.props
           )
 
-          this.fs.copyTpl(
+          this.fs.copy(
             this.templatePath('react/App.js'),
-            this.destinationPath('src/components/App.js'),
-            this.props
+            this.destinationPath('src/components/App.js')
           )
         } else if (this.props.eslint) {
           this.fs.copyTpl(
