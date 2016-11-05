@@ -65,7 +65,6 @@ const development = {
   output: {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
-  devtool: 'eval',
   devServer: {
     historyApiFallback: true,
     hot: true,
@@ -73,6 +72,7 @@ const development = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin({ multiStep: true }),
+    new webpack.SourceMapDevToolPlugin(),
     new BrowserSyncPlugin({ proxy: 'http://localhost:8080/' }, { reload: false })
   ]
 }

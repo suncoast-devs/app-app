@@ -71,7 +71,7 @@ yo app-app delta
 - [x] Alpha stack
 - [x] Beta stack
 - [x] Gamma stack
-- [ ] Delta stack
+- [x] Delta stack
 - [ ] Epsilon stack
 - [ ] Zeta stack
 - [ ] Vendor entry point and chunking

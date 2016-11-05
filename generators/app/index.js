@@ -8,9 +8,9 @@ const STACKS = {
   alpha: 'A vanilla stack with HTML, CSS, linting, and BrowserSync',
   beta: 'A vanilla stack with HTML, CSS, linting, JavaScript and BrowserSync',
   gamma: 'A webpack stack with Babel and SASS. No JavaScript frameworks.',
-  delta: 'A basic React Stack with React Router',
-  epsilon: 'A React Stack with MobX boilerplate',
-  zeta: 'A React Stack with Redux boilerplate'
+  delta: 'A basic React Stack',
+  epsilon: 'A full React Stack with MobX boilerplate',
+  zeta: 'A full React Stack with Redux boilerplate'
 }
 
 class AppApp extends yeoman.Base {
@@ -23,6 +23,7 @@ class AppApp extends yeoman.Base {
   prompting () {
     this.props = {
       stylelint: true,
+      styleExt: 'css',
       eslint: true,
       react: true,
       webpack: true
@@ -297,7 +298,8 @@ class AppApp extends yeoman.Base {
       devDependencies.push(
         'babel-preset-react',
         'eslint-plugin-react',
-        'eslint-config-standard-react'
+        'eslint-config-standard-react',
+        'react-hot-loader@latest'
       )
     }
 

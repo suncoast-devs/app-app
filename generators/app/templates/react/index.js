@@ -1,5 +1,6 @@
 import React from 'react'
-import { render } from 'react-dom'
+import ReactDOM from 'react-dom'
+import { AppContainer } from 'react-hot-loader'
 import App from './components/App'
 
 import './styles/screen.<%= styleExt %>'
