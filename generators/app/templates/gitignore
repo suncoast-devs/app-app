@@ -1,9 +1,9 @@
 # dependencies
 node_modules
 
-# production
+<% if ( webpack ) { %># production
 public
 
-# misc
+<% } %># misc
 .DS_Store
 npm-debug.log

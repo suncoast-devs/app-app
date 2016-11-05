@@ -184,9 +184,10 @@ class AppApp extends yeoman.Base {
       },
 
       gitIgnore () {
-        this.fs.copy(
+        this.fs.copyTpl(
           this.templatePath('gitignore'),
-          this.destinationPath('.gitignore')
+          this.destinationPath('.gitignore'),
+          this.props
         )
       },
 
