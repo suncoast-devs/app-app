@@ -249,7 +249,8 @@ class AppApp extends yeoman.Base {
     const devDependencies = [
       'browser-sync',
       'stylelint',
-      'stylelint-config-standard'
+      'stylelint-config-standard',
+      'surge'
     ]
 
     if (this.props.eslint) {
