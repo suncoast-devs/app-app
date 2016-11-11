@@ -3,6 +3,7 @@
 const yeoman = require('yeoman-generator')
 const emptyDir = require('empty-dir')
 const chalk = require('chalk')
+const childProcess = require('child_process')
 
 const STACKS = {
   alpha: 'A vanilla stack with HTML, CSS, linting, and BrowserSync',
@@ -104,8 +105,16 @@ class AppApp extends yeoman.Base {
         Object.assign(this.props, props)
         this.props.babel = this.props.webpack
         this.props.sass = ['scss', 'sass'].includes(this.props.styleExt)
+        this.props.user = this.githubUsername()
+        this.props.domain = `${this.appname}.${this.props.user}.surge.sh`
       }
     })
+  }
+
+  githubUsername () {
+    const spawn = childProcess.spawnSync('ssh', ['-T', 'git@github.com'])
+    const user = spawn.stderr.toString().match(/Hi (.+)!/)[1]
+    return user || childProcess.execSync('id -un')
   }
 
   get writing () {
@@ -124,7 +133,7 @@ class AppApp extends yeoman.Base {
         const pkg = {
           private: true,
           scripts: {
-            deploy: 'surge ./public'
+            deploy: `surge ./public --domain ${this.props.domain}`
           }
         }
 
