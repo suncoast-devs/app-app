@@ -42,6 +42,11 @@ class AppApp extends yeoman.Base {
       message: `What's your project's title?`,
       default: this.appname,
       when: (props) => !props.empty
+    }, {
+      type: 'confirm',
+      name: 'repo',
+      message: 'Create GitHub repository?',
+      default: true
     }]
 
     if (this.stack) {
@@ -105,8 +110,7 @@ class AppApp extends yeoman.Base {
         Object.assign(this.props, props)
         this.props.babel = this.props.webpack
         this.props.sass = ['scss', 'sass'].includes(this.props.styleExt)
-        this.props.user = this.githubUsername()
-        this.props.domain = `${this.appname}.${this.props.user}.surge.sh`
+        this.props.website = `https://${this.domainName()}`
       }
     })
   }
@@ -115,6 +119,10 @@ class AppApp extends yeoman.Base {
     const spawn = childProcess.spawnSync('ssh', ['-T', 'git@github.com'])
     const user = spawn.stderr.toString().match(/Hi (.+)!/)[1]
     return user || childProcess.execSync('id -un')
+  }
+
+  domainName () {
+    return `${this.appname}.${this.githubUsername()}.surge.sh`
   }
 
   get writing () {
@@ -133,7 +141,7 @@ class AppApp extends yeoman.Base {
         const pkg = {
           private: true,
           scripts: {
-            deploy: `surge ./public --domain ${this.props.domain}`
+            deploy: `surge ./public --domain ${this.domainName()}`
           }
         }
 
@@ -331,6 +339,16 @@ class AppApp extends yeoman.Base {
     this.log('Installing dependencies...')
     this.npmInstall(devDependencies, { 'saveDev': true })
     this.npmInstall(dependencies, { 'save': true })
+  }
+
+  end () {
+    if (this.props.repo) {
+      this.spawnCommandSync('git', ['init'])
+      this.spawnCommandSync('git', ['add', '--all'])
+      this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
+      this.spawnCommandSync('hub', ['create', '-h', this.props.website, this.appname])
+      this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
+    }
   }
 }
 
