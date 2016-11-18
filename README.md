@@ -2,11 +2,7 @@
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and `generator-app-app` using [npm](https://www.npmjs.com/).
-
-```bash
-npm install -g yo generator-app-app
-```
+`npm i -g app-app`
 
 Optionally, install `tidy-html5`, and the [Tidy Linter](https://atom.io/packages/linter-tidy) for Atom:
 
@@ -14,12 +10,16 @@ Optionally, install `tidy-html5`, and the [Tidy Linter](https://atom.io/packages
 brew install tidy-html5
 ```
 
+## Usage
+
+`app-app` <flags> [<project-name>...]
+
 Then generate your new project:
 
 ```bash
-take cool-project-name
-yo app-app
+app-app cool-project-name
 
+cd cool-project-name
 npm start
 ```
 
@@ -30,38 +30,38 @@ npm start
 Optionally, you can specify a stack name, like: `alpha`, `beta`, `gamma`, etc. to skip the prompts.
 
 ```bash
-yo app-app delta
+app-app --delta hello-react
 ```
 
-### `alpha`
+### `--alpha`, `-a`
 
 - BrowserSync via `npm start`
 - Deployment via `npm run deploy` to [Surge.sh](https://surge.sh)
 - Linting in Atom with `stylelint` and `htmlhint`
 
-### `beta`
+### `--beta`, `-b`
 
 - Everything in the `alpha` stack
 - JavaScript (ES2015)
 - Linting in Atom with `eslint` using JS Standard
 
-### `gamma`
+### `--gamma`, `-g`
 
 - Everything in the `beta` stack
 - webpack based build (`npm run build`) with babel (still using BrowerSync)
 
-### `delta`
+### `--delta`, `-d`
 
 - Everything in the `gamma` stack
 - React
 - Configure webpack with CSS modules and hot module reloading
 
-### `epsilon`
+### `--epsilon`, `-e`
 
 - Everything in the `delta` stack
 - MobX & React Router
 
-### `zeta`
+### `--zeta`, `-z`
 
 - Everything in the `delta` stack
 - Redux & React Router
