@@ -38,7 +38,8 @@ class AppApp extends yeoman.Base {
       type: 'confirm',
       name: 'repo',
       message: 'Create GitHub repository?',
-      default: true
+      default: true,
+      when: (props) => !props.empty
     }]
 
     if (this.stack) {

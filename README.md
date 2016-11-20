@@ -13,15 +13,14 @@ brew install tidy-html5
 ## Usage
 
 ```bash
-app-app <flags> [<project-name>...]
+app-app [<flags>]
 ```
 
 Then generate your new project:
 
 ```bash
-app-app cool-project-name
-
 cd cool-project-name
+app-app --alpha
 npm start
 ```
 
@@ -31,8 +30,10 @@ npm start
 
 Optionally, you can specify a stack name, like: `alpha`, `beta`, `gamma`, etc. to skip the prompts.
 
-```bash
-app-app --delta hello-react
+```shell
+mkdir hello-react
+cd hello-react
+app-app --delta
 ```
 
 #### `--alpha`, `-a`
