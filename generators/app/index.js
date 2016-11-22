@@ -110,7 +110,7 @@ class AppApp extends yeoman.Base {
         Object.assign(this.props, props)
         this.props.babel = this.props.webpack
         this.props.sass = ['scss', 'sass'].includes(this.props.styleExt)
-        this.props.website = `https://${this.domainName()}`
+        this.props.website = `http://${this.domainName()}`
       }
     })
   }
@@ -122,7 +122,7 @@ class AppApp extends yeoman.Base {
   }
 
   domainName () {
-    return `${_.kebabCase(this.appname)}.${this.githubUsername()}.surge.sh`
+    return `${_.kebabCase(this.appname)}.${this.githubUsername()}.surge.sh`.toLowerCase()
   }
 
   get writing () {
