@@ -3,6 +3,7 @@
 const yeoman = require('yeoman-generator')
 const emptyDir = require('empty-dir')
 const chalk = require('chalk')
+const _ = require('lodash')
 const childProcess = require('child_process')
 const STACKS = require('./stacks')
 
@@ -32,13 +33,19 @@ class AppApp extends yeoman.Base {
       type: 'input',
       name: 'title',
       message: `What's your project's title?`,
-      default: this.appname,
+      default: _.startCase(this.appname),
       when: (props) => !props.empty
     }, {
       type: 'confirm',
       name: 'repo',
       message: 'Create GitHub repository?',
       default: true,
+      when: (props) => !props.empty
+    }, {
+      type: 'confirm',
+      name: 'yarn',
+      message: 'Use Yarn or npm for dependencies?',
+      default: false,
       when: (props) => !props.empty
     }]
 
@@ -115,7 +122,7 @@ class AppApp extends yeoman.Base {
   }
 
   domainName () {
-    return `${this.appname}.${this.githubUsername()}.surge.sh`
+    return `${_.kebabCase(this.appname)}.${this.githubUsername()}.surge.sh`
   }
 
   get writing () {
@@ -330,8 +337,15 @@ class AppApp extends yeoman.Base {
     }
 
     this.log('Installing dependencies...')
-    this.npmInstall(devDependencies, { 'saveDev': true })
-    this.npmInstall(dependencies, { 'save': true })
+
+    if (this.props.yarn) {
+      // TODO: Refactor when yarn suppport for Yeoman drops
+      if (dependencies.length > 0) this.spawnCommandSync('yarn', ['add', ...dependencies])
+      if (devDependencies.length > 0) this.spawnCommandSync('yarn', ['add', ...devDependencies, '--dev'])
+    } else {
+      this.npmInstall(devDependencies, { 'saveDev': true })
+      this.npmInstall(dependencies, { 'save': true })
+    }
   }
 
   end () {
@@ -339,7 +353,7 @@ class AppApp extends yeoman.Base {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('hub', ['create', '-h', this.props.website, this.appname])
+      this.spawnCommandSync('hub', ['create', '-h', this.props.website, _.kebabCase(this.appname)])
       this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
   }
