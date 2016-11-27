@@ -3,16 +3,9 @@
 const yeoman = require('yeoman-generator')
 const emptyDir = require('empty-dir')
 const chalk = require('chalk')
+const _ = require('lodash')
 const childProcess = require('child_process')
-
-const STACKS = {
-  alpha: 'A vanilla stack with HTML, CSS, linting, and BrowserSync',
-  beta: 'A vanilla stack with HTML, CSS, linting, JavaScript and BrowserSync',
-  gamma: 'A webpack stack with Babel and SASS. No JavaScript frameworks.',
-  delta: 'A basic React Stack',
-  epsilon: 'A full React Stack with MobX boilerplate',
-  zeta: 'A full React Stack with Redux boilerplate'
-}
+const STACKS = require('./stacks')
 
 class AppApp extends yeoman.Base {
 
@@ -40,13 +33,20 @@ class AppApp extends yeoman.Base {
       type: 'input',
       name: 'title',
       message: `What's your project's title?`,
-      default: this.appname,
+      default: _.startCase(this.appname),
       when: (props) => !props.empty
     }, {
       type: 'confirm',
       name: 'repo',
       message: 'Create GitHub repository?',
-      default: true
+      default: true,
+      when: (props) => !props.empty
+    }, {
+      type: 'confirm',
+      name: 'yarn',
+      message: 'Use Yarn or npm for dependencies?',
+      default: false,
+      when: (props) => !props.empty
     }]
 
     if (this.stack) {
@@ -110,7 +110,7 @@ class AppApp extends yeoman.Base {
         Object.assign(this.props, props)
         this.props.babel = this.props.webpack
         this.props.sass = ['scss', 'sass'].includes(this.props.styleExt)
-        this.props.website = `https://${this.domainName()}`
+        this.props.website = `http://${this.domainName()}`
       }
     })
   }
@@ -122,7 +122,7 @@ class AppApp extends yeoman.Base {
   }
 
   domainName () {
-    return `${this.appname}.${this.githubUsername()}.surge.sh`
+    return `${_.kebabCase(this.appname)}.${this.githubUsername()}.surge.sh`.toLowerCase()
   }
 
   get writing () {
@@ -337,8 +337,15 @@ class AppApp extends yeoman.Base {
     }
 
     this.log('Installing dependencies...')
-    this.npmInstall(devDependencies, { 'saveDev': true })
-    this.npmInstall(dependencies, { 'save': true })
+
+    if (this.props.yarn) {
+      // TODO: Refactor when yarn suppport for Yeoman drops
+      if (dependencies.length > 0) this.spawnCommandSync('yarn', ['add', ...dependencies])
+      if (devDependencies.length > 0) this.spawnCommandSync('yarn', ['add', ...devDependencies, '--dev'])
+    } else {
+      this.npmInstall(devDependencies, { 'saveDev': true })
+      this.npmInstall(dependencies, { 'save': true })
+    }
   }
 
   end () {
@@ -346,7 +353,7 @@ class AppApp extends yeoman.Base {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('hub', ['create', '-h', this.props.website, this.appname])
+      this.spawnCommandSync('hub', ['create', '-h', this.props.website, _.kebabCase(this.appname)])
       this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
   }
