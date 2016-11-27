@@ -44,7 +44,7 @@ class AppApp extends yeoman.Base {
     }, {
       type: 'confirm',
       name: 'yarn',
-      message: 'Use Yarn or npm for dependencies?',
+      message: 'Use Yarn for dependencies?',
       default: false,
       when: (props) => !props.empty
     }]
