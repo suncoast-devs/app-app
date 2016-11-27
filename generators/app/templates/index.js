@@ -2,7 +2,7 @@
 import './styles/screen.sass'
 
 <% } %>const main = () => {
-  document.getElementById('root').textContent = 'Hello, World!'
+  document.querySelector('h1').textContent += '!!'
 }
 
 document.addEventListener('DOMContentLoaded', main)
