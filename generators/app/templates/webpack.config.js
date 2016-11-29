@@ -43,7 +43,8 @@ const common = {
       test: /\.(<%= sass ? 'sass|s?css' : 'css' %>)$/,
       loaders: [
         'style',<% if ( react ) { %>
-        'css?camelCase&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',<% } else { %>'css',<% } %>
+        'css?camelCase&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',<% } else { %>
+        'css',<% } %>
         'postcss'<% if ( sass ) { %>,
         'sass'
 <% } %>      ]

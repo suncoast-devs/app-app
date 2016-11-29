@@ -301,6 +301,7 @@ class AppApp extends yeoman.Base {
         'css-loader',
         'style-loader',
         'postcss-loader',
+        'raw-loader',
         'autoprefixer'
       )
 
