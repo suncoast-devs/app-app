@@ -45,7 +45,7 @@ class AppApp extends yeoman.Base {
       type: 'confirm',
       name: 'yarn',
       message: 'Use Yarn for dependencies?',
-      default: false,
+      default: true,
       when: (props) => !props.empty
     }]
 
@@ -69,10 +69,10 @@ class AppApp extends yeoman.Base {
         break
       case 'gamma':
         this.props.react = false
-        this.props.styleExt = 'sass'
+        this.props.styleExt = 'scss'
         break
       case 'delta':
-        this.props.styleExt = 'sass'
+        this.props.styleExt = 'scss'
         break
       default:
         prompts.push({
@@ -138,10 +138,11 @@ class AppApp extends yeoman.Base {
       },
 
       packageJSON () {
+        const deployCmd = `surge ./public --domain ${this.domainName()}`
         const pkg = {
           private: true,
           scripts: {
-            deploy: `surge ./public --domain ${this.domainName()}`
+            deploy: this.props.webpack ? `npm run build && ${deployCmd}` : deployCmd
           }
         }
 
