@@ -4,10 +4,6 @@
 const meow = require('meow')
 const _ = require('lodash')
 
-const updateNotifier = require('update-notifier')
-const pkg = require('./package.json')
-updateNotifier({pkg}).notify()
-
 const yeoman = require('yeoman-environment')
 const env = yeoman.createEnv()
 env.register(require.resolve('./generators/app'), 'app')
@@ -29,6 +25,24 @@ Examples
 })
 
 const stack = _.findKey(_.pick(cli.flags, _.keys(STACKS)))
-
 const cmd = ['app', stack].join(' ')
-env.run(cmd)
+
+const updateNotifier = require('update-notifier')
+const pkg = require('./package.json')
+updateNotifier({
+  pkg,
+  updateCheckInterval: 1, // Hourly
+  callback: (err, update) => {
+    if (err) {
+      console.error(err)
+    } else {
+      if (update.current === update.latest) {
+        env.run(cmd)
+      } else {
+        console.log(`
+    Update available: ${update.current} → ${update.latest}
+    Run 'npm i -g app-app' to update.`)
+      }
+    }
+  }
+}).notify()
