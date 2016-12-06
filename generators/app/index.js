@@ -319,7 +319,7 @@ class AppApp extends yeoman.Base {
         'babel-preset-react',
         'eslint-plugin-react',
         'eslint-config-standard-react',
-        'react-hot-loader@latest'
+        'react-hot-loader@next'
       )
     }
 
