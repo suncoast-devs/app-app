@@ -292,8 +292,8 @@ class AppApp extends yeoman.Base {
 
     if (this.props.webpack) {
       devDependencies.push(
-        'webpack',
-        'webpack-dev-server',
+        'webpack@^1',
+        'webpack-dev-server@^1',
         'webpack-merge',
         'webpack-validator',
         'browser-sync-webpack-plugin',
