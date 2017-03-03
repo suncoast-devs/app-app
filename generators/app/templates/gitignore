@@ -4,6 +4,11 @@ node_modules
 <% if ( webpack ) { %># production
 public
 
-<% } %># misc
+<% } %>
+# misc
 .DS_Store
 npm-debug.log
+
+<% if ( vsCode ) { %># vscode config settings
+.vscode
+<% } %>
