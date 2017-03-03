@@ -18,6 +18,9 @@ Usage
 Stacks
   ${_.map(STACKS, (v, k) => [_.padEnd(`-${k[0]}, --${k}`, 14), v].join('  ')).join('\n  ')}
 
+Ide
+   ${_.map(IDE, (v, k) => [_.padEnd(`--${k}`, 14), v].join('  ')).join('\n  ')}
+
 Examples
   $ app-app --alpha hello-world
 `, {

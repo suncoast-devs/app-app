@@ -12,7 +12,7 @@ class AppApp extends yeoman.Base {
   constructor (args, options) {
     super(args, options)
     this.argument('stack', { type: String, required: false })
-    this.argument('ide', {type:String, required:false});
+    this.argument('ide', { type: String, required: false });
   }
 
   prompting () {
@@ -60,7 +60,7 @@ class AppApp extends yeoman.Base {
     }
 
     switch (this.ide){
-      case "vscode":
+      case 'vscode':
         this.props.vsCode = true
         break
       default: 
@@ -275,8 +275,8 @@ class AppApp extends yeoman.Base {
       vsCode() {
         if (this.props.vsCode){
           this.fs.copyTpl(
-            this.templatePath("vscode/tasks.json"),
-            this.destinationPath(".vscode/tasks.json"),
+            this.templatePath('vscode/tasks.json'),
+            this.destinationPath('.vscode/tasks.json'),
             this.props
           )
         }
