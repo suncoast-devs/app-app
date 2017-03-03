@@ -9,10 +9,11 @@ const env = yeoman.createEnv()
 env.register(require.resolve('./generators/app'), 'app')
 
 const STACKS = require('./generators/app/stacks')
+const IDE = require('./generators/app/ide')
 
 const cli = meow(`
 Usage
-  $ app-app <stack>
+  $ app-app <stack> <ide>
 
 Stacks
   ${_.map(STACKS, (v, k) => [_.padEnd(`-${k[0]}, --${k}`, 14), v].join('  ')).join('\n  ')}
@@ -25,7 +26,8 @@ Examples
 })
 
 const stack = _.findKey(_.pick(cli.flags, _.keys(STACKS)))
-const cmd = ['app', stack].join(' ')
+const ide = _.findKey(_.pick(cli.flags, _.keys(IDE)))
+const cmd = ['app', stack, ide].join(' ')
 
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
