@@ -34,7 +34,7 @@ class AppApp extends yeoman.Base {
     }, {
       type: 'input',
       name: 'title',
-      message: `heyo, What's your project's title?`,
+      message: `What's your project's title?`,
       default: _.startCase(this.appname),
       when: (props) => !props.empty
     }, {
