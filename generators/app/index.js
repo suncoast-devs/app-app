@@ -127,7 +127,12 @@ class AppApp extends yeoman.Base {
   }
 
   username () {
-    return childProcess.execSync('id -un')
+    if (process.platform === "win32"){
+      this.log(process.env.UserName);
+      return process.env.UserName.replace(/ /g, '-');
+    } else{
+      return childProcess.execSync('id -un')
+    }
   }
 
   domainName () {
