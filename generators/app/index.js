@@ -12,7 +12,7 @@ class AppApp extends yeoman.Base {
   constructor (args, options) {
     super(args, options)
     this.argument('stack', { type: String, required: false })
-    this.argument('ide', { type: String, required: false });
+    this.argument('ide', { type: String, required: false })
   }
 
   prompting () {
@@ -22,7 +22,7 @@ class AppApp extends yeoman.Base {
       eslint: true,
       react: true,
       webpack: true,
-      vsCode:false
+      vsCode: false
     }
 
     let prompts = [{
@@ -59,11 +59,11 @@ class AppApp extends yeoman.Base {
       }
     }
 
-    switch (this.ide){
+    switch (this.ide) {
       case 'vscode':
         this.props.vsCode = true
         break
-      default: 
+      default:
         this.props.vsCode = false
         break
     }
@@ -126,14 +126,12 @@ class AppApp extends yeoman.Base {
     })
   }
 
-  githubUsername () {
-    const spawn = childProcess.spawnSync('ssh', ['-T', 'git@github.com'])
-    const user = spawn.stderr.toString().match(/Hi (.+)!/)[1]
-    return user || childProcess.execSync('id -un')
+  username () {
+    return childProcess.execSync('id -un')
   }
 
   domainName () {
-    return `${_.kebabCase(this.appname)}.${this.githubUsername()}.surge.sh`.toLowerCase()
+    return `${_.kebabCase(this.appname)}.${this.username()}.surge.sh`.toLowerCase()
   }
 
   get writing () {
@@ -272,15 +270,14 @@ class AppApp extends yeoman.Base {
         )
       },
 
-      vsCode() {
-        if (this.props.vsCode){
+      vsCode () {
+        if (this.props.vsCode) {
           this.fs.copyTpl(
             this.templatePath('vscode/tasks.json'),
             this.destinationPath('.vscode/tasks.json'),
             this.props
           )
         }
-       
       }
     }
   }
