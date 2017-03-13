@@ -34,7 +34,7 @@ class AppApp extends yeoman.Base {
     }, {
       type: 'input',
       name: 'title',
-      message: `What's your project's title?`,
+      message: `heyo, What's your project's title?`,
       default: _.startCase(this.appname),
       when: (props) => !props.empty
     }, {
@@ -127,7 +127,12 @@ class AppApp extends yeoman.Base {
   }
 
   username () {
-    return childProcess.execSync('id -un')
+    if (process.platform === "win32"){
+      this.log(process.env.UserName);
+      return process.env.UserName
+    } else{
+      return childProcess.execSync('id -un')
+    }
   }
 
   domainName () {
