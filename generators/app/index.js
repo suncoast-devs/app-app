@@ -4,7 +4,6 @@ const yeoman = require('yeoman-generator')
 const emptyDir = require('empty-dir')
 const chalk = require('chalk')
 const _ = require('lodash')
-const childProcess = require('child_process')
 const STACKS = require('./stacks')
 
 class AppApp extends yeoman.Base {
@@ -126,17 +125,12 @@ class AppApp extends yeoman.Base {
     })
   }
 
-  username () {
-    if (process.platform === "win32"){
-      this.log(process.env.UserName);
-      return process.env.UserName.replace(/ /g, '-');
-    } else{
-      return childProcess.execSync('id -un')
-    }
+  get username () {
+    (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
   }
 
-  domainName () {
-    return `${_.kebabCase(this.appname)}.${this.username()}.surge.sh`.toLowerCase()
+  get domainName () {
+    return `${_.kebabCase(this.appname)}.${this.username}.surge.sh`.toLowerCase()
   }
 
   get writing () {
@@ -152,7 +146,7 @@ class AppApp extends yeoman.Base {
       },
 
       packageJSON () {
-        const deployCmd = `surge ./public --domain ${this.domainName()}`
+        const deployCmd = `surge ./public --domain ${this.domainName}`
         const pkg = {
           private: true,
           scripts: {
