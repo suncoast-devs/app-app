@@ -12,6 +12,7 @@ class AppApp extends yeoman.Base {
   constructor (args, options) {
     super(args, options)
     this.argument('stack', { type: String, required: false })
+    this.argument('ide', { type: String, required: false });
   }
 
   prompting () {
@@ -20,7 +21,8 @@ class AppApp extends yeoman.Base {
       styleExt: 'css',
       eslint: true,
       react: true,
-      webpack: true
+      webpack: true,
+      vsCode:false
     }
 
     let prompts = [{
@@ -55,6 +57,15 @@ class AppApp extends yeoman.Base {
       } else {
         this.log(chalk.red.bold(`Unknown stack (${this.stack}). Supported stacks are: ${Object.keys(STACKS).join(', ')}`))
       }
+    }
+
+    switch (this.ide){
+      case 'vscode':
+        this.props.vsCode = true
+        break
+      default: 
+        this.props.vsCode = false
+        break
     }
 
     switch (this.stack) {
@@ -259,6 +270,17 @@ class AppApp extends yeoman.Base {
           this.destinationPath('README.md'),
           this.props
         )
+      },
+
+      vsCode() {
+        if (this.props.vsCode){
+          this.fs.copyTpl(
+            this.templatePath('vscode/tasks.json'),
+            this.destinationPath('.vscode/tasks.json'),
+            this.props
+          )
+        }
+       
       }
     }
   }
