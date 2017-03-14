@@ -130,7 +130,7 @@ class AppApp extends yeoman.Base {
   }
 
   get domainName () {
-    return `${_.kebabCase(this.appname)}.${this.username}.surge.sh`.toLowerCase()
+    return `${_.kebabCase(this.appname)}.${this.username}.surge.sh`.toLowerCase
   }
 
   get writing () {
@@ -158,7 +158,7 @@ class AppApp extends yeoman.Base {
           pkg.scripts.start = 'webpack-dev-server'
           pkg.scripts.build = 'rm -rf public && NODE_ENV=production webpack --optimize-minimize --progress --profile --colors'
         } else {
-          pkg.scripts.start = `browser-sync start --server 'public' --files 'public'`
+          pkg.scripts.start = `browser-sync start --server \"public\" --files \"public\"`
         }
 
         this.fs.writeJSON('package.json', pkg)
