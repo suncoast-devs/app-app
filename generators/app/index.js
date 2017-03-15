@@ -126,7 +126,7 @@ class AppApp extends yeoman.Base {
   }
 
   get username () {
-    (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
+    return (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
   }
 
   get domainName () {
