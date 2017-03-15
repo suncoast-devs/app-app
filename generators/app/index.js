@@ -120,7 +120,7 @@ class AppApp extends yeoman.Base {
         Object.assign(this.props, props)
         this.props.babel = this.props.webpack
         this.props.sass = ['scss', 'sass'].includes(this.props.styleExt)
-        this.props.website = `http://${this.domainName()}`
+        this.props.website = `http://${this.domainName}`
       }
     })
   }
