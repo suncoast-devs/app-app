@@ -1,21 +1,26 @@
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const validate = require('webpack-validator')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const ROOT_PATH = path.resolve(__dirname)
 const SRC_PATH = path.resolve(ROOT_PATH, 'src')
 const BUILD_PATH = path.resolve(ROOT_PATH, 'public')
 
 const common = {
-  entry: [
-    'whatwg-fetch',
-    SRC_PATH
-  ],
+  entry: {
+    vendor: [
+      'whatwg-fetch',
+      'babel-polyfill'<% if ( react ) { %>,
+      'react-dom',
+      'react'<% } %>
+    ],
+    app: SRC_PATH
+  },
   output: {
-    filename: 'bundle.js',
+    filename: 'app-[hash].js',
     path: BUILD_PATH,
     publicPath: '/'
   },
@@ -29,70 +34,86 @@ const common = {
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
+      filename: 'vendor-[hash].js'
     })
   ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       include: [SRC_PATH],
-      loader: 'babel'
+      loader: 'babel-loader'
     }, {
       test: /\.(png|jpe?g|gif|svg)$/,
-      loader: 'file'
+      loader: 'file-loader'
     }, {
       test: /\.(<%= sass ? 'sass|s?css' : 'css' %>)$/,
       loaders: [
-        'style',
-        'css',
-        'postcss'<% if ( sass ) { %>,
-        'sass'
-<% } %>      ]
+        'style-loader',
+        'css-loader',
+        {
+          loader: 'postcss-loader',
+          options: {
+            plugins: () => {
+              return [
+                require('autoprefixer')
+              ]
+            }
+          }
+        }<% if ( sass ) { %>,
+        'sass-loader'<% } %>
+      ]
     }]
-  },
-  postcss: () => {
-    return [
-      require('autoprefixer')
-    ]
   }
 }
 
 const development = {
-  entry: [<% if ( react ) { %>
-    'react-hot-loader/patch',<% } %>
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server'
-  ],
+  entry: {
+    vendor: [<% if ( react ) { %>
+      'react-hot-loader/patch',<% } %>
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/only-dev-server'
+    ]
+  },
   output: {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   devServer: {
     historyApiFallback: true,
     hot: true,
+    port: 8080,
+    contentBase: BUILD_PATH,
+    publicPath: '/',
     stats: { colors: true, chunks: false }
   },
+  devtool: 'eval',
   plugins: [
-    new webpack.HotModuleReplacementPlugin({ multiStep: true }),
-    new webpack.SourceMapDevToolPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
     new BrowserSyncPlugin({ proxy: 'http://localhost:8080/' }, { reload: false })
   ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.html$/,
-      loader: 'raw'
+      loader: 'raw-loader'
     }]
   }
 }
 
 const production = {
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } }),
+    new ExtractTextPlugin('style-[hash].css')
   ]
 }
 
-module.exports = validate(merge.smart(
+module.exports = merge.smart(
   process.env.npm_lifecycle_event === 'build'
   ? production
   : development,
   common
-))
+)

@@ -19,7 +19,7 @@ Stacks
   ${_.map(STACKS, (v, k) => [_.padEnd(`-${k[0]}, --${k}`, 14), v].join('  ')).join('\n  ')}
 
 Ide
-   ${_.map(IDE, (v, k) => [_.padEnd(`--${k}`, 14), v].join('  ')).join('\n  ')}
+  --vscode        Add some basic tasks in Visual Studio Code
 
 Examples
   $ app-app --alpha hello-world
@@ -30,7 +30,6 @@ Examples
 
 const stack = _.findKey(_.pick(cli.flags, _.keys(STACKS)))
 const ide = _.findKey(_.pick(cli.flags, _.keys(IDE)))
-const cmd = ['app', stack, ide].join(' ')
 
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
@@ -42,7 +41,7 @@ updateNotifier({
       console.error(err)
     } else {
       if (update.current === update.latest) {
-        env.run(cmd)
+        env.run('app', { stack, ide })
       } else {
         console.log(`
     Update available: ${update.current} → ${update.latest}

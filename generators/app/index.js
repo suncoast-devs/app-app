@@ -1,12 +1,12 @@
 'use strict'
 
-const yeoman = require('yeoman-generator')
+const Generator = require('yeoman-generator')
 const emptyDir = require('empty-dir')
 const chalk = require('chalk')
 const _ = require('lodash')
 const STACKS = require('./stacks')
 
-class AppApp extends yeoman.Base {
+class AppApp extends Generator {
 
   constructor (args, options) {
     super(args, options)
@@ -42,23 +42,17 @@ class AppApp extends yeoman.Base {
       message: 'Create GitHub repository?',
       default: true,
       when: (props) => !props.empty
-    }, {
-      type: 'confirm',
-      name: 'yarn',
-      message: 'Use Yarn for dependencies?',
-      default: true,
-      when: (props) => !props.empty
     }]
 
-    if (this.stack) {
-      if (STACKS.hasOwnProperty(this.stack)) {
-        this.log(`Using ${chalk.yellow.bold(this.stack.toUpperCase())}: ${STACKS[this.stack]}`)
+    if (this.options.stack) {
+      if (STACKS.hasOwnProperty(this.options.stack)) {
+        this.log(`Using ${chalk.yellow.bold(this.options.stack.toUpperCase())}: ${STACKS[this.options.stack]}`)
       } else {
-        this.log(chalk.red.bold(`Unknown stack (${this.stack}). Supported stacks are: ${Object.keys(STACKS).join(', ')}`))
+        this.log(chalk.red.bold(`Unknown stack (${this.options.stack}). Supported stacks are: ${Object.keys(STACKS).join(', ')}`))
       }
     }
 
-    switch (this.ide) {
+    switch (this.options.ide) {
       case 'vscode':
         this.props.vsCode = true
         break
@@ -67,7 +61,7 @@ class AppApp extends yeoman.Base {
         break
     }
 
-    switch (this.stack) {
+    switch (this.options.stack) {
       case 'alpha':
         this.props.eslint = false
         this.props.react = false
@@ -150,13 +144,14 @@ class AppApp extends yeoman.Base {
         const pkg = {
           private: true,
           scripts: {
-            deploy: this.props.webpack ? `npm run build && ${deployCmd}` : deployCmd
+            deploy: this.props.webpack ? `yarn build && ${deployCmd}` : deployCmd
           }
         }
 
         if (this.props.webpack) {
           pkg.scripts.start = 'webpack-dev-server'
-          pkg.scripts.build = 'rm -rf public && NODE_ENV=production webpack --optimize-minimize --progress --profile --colors'
+          pkg.scripts.prebuild = 'rm -f public/index.html public/app-*.js public/vendor-*.js public/screen-*.css'
+          pkg.scripts.build = 'NODE_ENV=production webpack --progress'
         } else {
           pkg.scripts.start = `browser-sync start --server 'public' --files 'public'`
         }
@@ -167,7 +162,7 @@ class AppApp extends yeoman.Base {
       babelRC () {
         if (this.props.babel) {
           const config = {
-            presets: ['es2015', 'stage-0'],
+            presets: [['es2015', { 'modules': false }], 'stage-0'],
             plugins: []
           }
 
@@ -184,9 +179,7 @@ class AppApp extends yeoman.Base {
         if (this.props.eslint) {
           const config = {
             extends: ['standard'],
-            rules: {
-              strict: 0
-            }
+            rules: {}
           }
 
           if (this.props.babel) {
@@ -195,6 +188,7 @@ class AppApp extends yeoman.Base {
 
           if (this.props.react) {
             config.extends.push('standard-react')
+            config.rules['react/prop-type'] = 0
           }
 
           this.fs.writeJSON(this.destinationPath('.eslintrc'), config)
@@ -220,9 +214,10 @@ class AppApp extends yeoman.Base {
 
       styles () {
         if (this.props.webpack) {
-          this.fs.copy(
+          this.fs.copyTpl(
             this.templatePath(`*.${this.props.styleExt}`),
-            this.destinationPath('src/styles')
+            this.destinationPath('src/styles'),
+            this.props
           )
         } else {
           this.fs.copy(
@@ -261,6 +256,13 @@ class AppApp extends yeoman.Base {
         )
       },
 
+      favIcon () {
+        this.fs.copy(
+            this.templatePath('favicon.ico'),
+            this.destinationPath('public/favicon.ico')
+          )
+      },
+
       readme () {
         this.fs.copyTpl(
           this.templatePath('README.md'),
@@ -294,6 +296,8 @@ class AppApp extends yeoman.Base {
         'eslint',
         'eslint-config-standard',
         'eslint-plugin-promise',
+        'eslint-plugin-import',
+        'eslint-plugin-node',
         'eslint-plugin-standard'
       )
     }
@@ -303,6 +307,7 @@ class AppApp extends yeoman.Base {
         'babel-core',
         'babel-eslint',
         'babel-loader',
+        'babel-polyfill',
         'babel-preset-es2015',
         'babel-preset-stage-0'
       )
@@ -310,11 +315,11 @@ class AppApp extends yeoman.Base {
 
     if (this.props.webpack) {
       devDependencies.push(
-        'webpack@^1',
-        'webpack-dev-server@^1',
+        'webpack',
+        'webpack-dev-server',
         'webpack-merge',
-        'webpack-validator',
         'browser-sync-webpack-plugin',
+        'extract-text-webpack-plugin',
         'html-webpack-plugin',
         'file-loader',
         'css-loader',
@@ -336,8 +341,7 @@ class AppApp extends yeoman.Base {
       devDependencies.push(
         'babel-preset-react',
         'eslint-plugin-react',
-        'eslint-config-standard-react',
-        'react-hot-loader@next'
+        'eslint-config-standard-react'
       )
     }
 
@@ -352,20 +356,16 @@ class AppApp extends yeoman.Base {
     if (this.props.react) {
       dependencies.push(
         'react',
-        'react-dom'
+        'react-dom',
+        'redbox-react',
+        'react-hot-loader@next'
       )
     }
 
     this.log('Installing dependencies...')
 
-    if (this.props.yarn) {
-      // TODO: Refactor when yarn suppport for Yeoman drops
-      if (dependencies.length > 0) this.spawnCommandSync('yarn', ['add', ...dependencies])
-      if (devDependencies.length > 0) this.spawnCommandSync('yarn', ['add', ...devDependencies, '--dev'])
-    } else {
-      this.npmInstall(devDependencies, { 'saveDev': true })
-      this.npmInstall(dependencies, { 'save': true })
-    }
+    this.yarnInstall(devDependencies, { 'saveDev': true })
+    this.yarnInstall(dependencies, { 'save': true })
   }
 
   end () {

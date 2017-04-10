@@ -1,7 +1,18 @@
-=font-smoothing($value: on)
-  @if $value == on
-    -moz-osx-font-smoothing: grayscale
-    -webkit-font-smoothing: antialiased
-  @else
-    -moz-osx-font-smoothing: auto
-    -webkit-font-smoothing: subpixel-antialiased
+$base-text-size: 16px
+$base-font-family: sans-serif
+
+// Remove the browsers built-in styling for lists elements.
+@mixin reset-list
+  padding-left: 0
+
+  li {
+    list-style: none
+
+// Apply a height to the html and body elements to that they
+// fill the height of the view by default.
+@mixin full-height
+  height: 100%
+
+  body<% if ( react ) { %>,
+  #root<% } %> {
+    min-height: 100%

@@ -2,7 +2,10 @@
 node_modules
 
 <% if ( webpack ) { %># production
-public
+public/app-*.js
+public/vendor-*.js
+public/screen-*.css
+public/index.html
 
 <% } %>
 # misc

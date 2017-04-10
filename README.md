@@ -51,17 +51,7 @@ Optionally, you can specify a stack name, like: `alpha`, `beta`, `gamma`, etc. t
 
 - Everything in the `gamma` stack
 - React
-- Configure webpack with CSS modules and hot module reloading
-
-#### `--epsilon`, `-e`
-
-- Everything in the `delta` stack
-- MobX & React Router
-
-#### `--zeta`, `-z`
-
-- Everything in the `delta` stack
-- Redux & React Router
+- Configure webpack and hot module reloading
 
 ### TODO
 
@@ -69,9 +59,7 @@ Optionally, you can specify a stack name, like: `alpha`, `beta`, `gamma`, etc. t
 - [x] Beta stack
 - [x] Gamma stack
 - [x] Delta stack
-- [ ] Epsilon stack
-- [ ] Zeta stack
-- [ ] Vendor entry point and chunking
+- [x] Vendor entry point and chunking
 - [ ] CLI lint and warnings before deploy
 
 ## License
