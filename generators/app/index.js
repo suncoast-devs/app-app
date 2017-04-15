@@ -7,7 +7,6 @@ const _ = require('lodash')
 const STACKS = require('./stacks')
 
 class AppApp extends Generator {
-
   constructor (args, options) {
     super(args, options)
     this.argument('stack', { type: String, required: false })
@@ -188,7 +187,7 @@ class AppApp extends Generator {
 
           if (this.props.react) {
             config.extends.push('standard-react')
-            config.rules['react/prop-type'] = 0
+            config.rules['react/prop-types'] = 0
           }
 
           this.fs.writeJSON(this.destinationPath('.eslintrc'), config)
