@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 
-const meow = require('meow')
 const _ = require('lodash')
 const fs = require('fs-extra')
 const chalk = require('chalk')
+const commander = require('commander')
 
 const yeoman = require('yeoman-environment')
 const env = yeoman.createEnv()
@@ -13,32 +13,45 @@ env.register(require.resolve('./generators/app'), 'app')
 const STACKS = require('./generators/app/stacks')
 const IDE = require('./generators/app/ide')
 
-const cli = meow(`
-Usage
-  $ yarn create app-app <APP_NAME> [<stack>] [<ide>]
+const packageJson = require('./package.json')
 
-Stacks
-  ${_.map(STACKS, (v, k) => [_.padEnd(`-${k[0]}, --${k}`, 14), v].join('  ')).join('\n  ')}
+let projectName
 
-IDE
-  --vscode        Add some basic tasks in Visual Studio Code
+// TODO: Is there a way to provide option list programmatically from STACKS?
+const program = new commander.Command(packageJson.name)
+  .version(packageJson.version)
+  .arguments('<project-directory>')
+  .option('-a, --alpha', STACKS.alpha)
+  .option('-b, --beta', STACKS.beta)
+  .option('-g, --gamma', STACKS.gamma)
+  .option('-c, --delta', STACKS.delta)
+  .option('--vscode', IDE.vscode)
+  .usage(`${chalk.green('<project-directory>')} [options]`)
+  .action(name => {
+    projectName = name
+  })
+  .on('--help', () => {
+    console.log(`    Only ${chalk.green('<project-directory>')} is required.`)
+  })
+  .parse(process.argv)
 
-Examples
-  $ yarn create app-app --alpha hello-world
-`, {
-  alias: _.keys(STACKS).reduce((o, s) => { o[s[0]] = s; return o }, {}),
-  boolean: _.keys(STACKS)
-})
-
-const stack = _.findKey(_.pick(cli.flags, _.keys(STACKS)))
-const ide = _.findKey(_.pick(cli.flags, _.keys(IDE)))
-
-const [ name ] = cli.input
-
-if (!name) {
-  console.warn(chalk.red('\n  An APP_NAME is required!'))
-  cli.showHelp(1)
+if (typeof projectName === 'undefined') {
+  console.error('Please specify the project directory:')
+  console.log(
+      `  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}`
+    )
+  console.log()
+  console.log('For example:')
+  console.log(`  ${chalk.cyan(program.name())} ${chalk.green('my-cool-app')}`)
+  console.log()
+  console.log(
+      `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
+    )
+  process.exit(1)
 }
+
+const stack = _.findKey(_.pick(program, _.keys(STACKS)))
+const ide = _.findKey(_.pick(program, _.keys(IDE)))
 
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
@@ -51,8 +64,8 @@ updateNotifier({
       console.error(err)
     } else {
       if (update.current === update.latest) {
-        fs.ensureDirSync(name)
-        env.run('app', { stack, ide, name })
+        fs.ensureDirSync(projectName)
+        env.run('app', { stack, ide, name: projectName })
       } else {
         console.log(`
     Update available: ${update.current} → ${update.latest}
