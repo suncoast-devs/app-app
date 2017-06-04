@@ -3,13 +3,13 @@
 ## Usage
 
 ```bash
-yarn create app-app [<flags>]
+yarn create app-app APP_NAME [<flags>]
 ```
 
 To generate your new project:
 
 ```bash
-yarn create app-app --alpha cool-project-name
+yarn create app-app cool-project-name --alpha
 cd cool-project-name
 
 atom .

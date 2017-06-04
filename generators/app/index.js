@@ -166,12 +166,14 @@ class AppApp extends Generator {
         if (this.props.babel) {
           const config = {
             presets: [['es2015', { 'modules': false }], 'stage-0'],
+            rules: [],
             plugins: []
           }
 
           if (this.props.react) {
             config.presets.push('react')
             config.plugins.push('react-hot-loader/babel')
+            config.rules.push({ 'react/prop-types': 0 })
           }
 
           this.fs.writeJSON(this.destinationPath('.babelrc'), config)
@@ -201,7 +203,10 @@ class AppApp extends Generator {
       styleLintRC () {
         if (this.props.stylelint) {
           const config = {
-            extends: 'stylelint-config-standard'
+            extends: 'stylelint-config-standard',
+            rules: {
+              'declaration-empty-line-before': 'never'
+            }
           }
           this.fs.writeJSON(this.destinationPath('.stylelintrc'), config)
         }

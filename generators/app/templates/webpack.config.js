@@ -74,8 +74,7 @@ const development = {
   entry: {
     vendor: [<% if ( react ) { %>
       'react-hot-loader/patch',<% } %>
-      'webpack-dev-server/client?http://localhost:8080',
-      'webpack/hot/only-dev-server'
+      'webpack-dev-server/client?http://localhost:8080'
     ]
   },
   output: {
@@ -89,7 +88,7 @@ const development = {
     publicPath: '/',
     stats: { colors: true, chunks: false }
   },
-  devtool: 'eval',
+  devtool: 'eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
