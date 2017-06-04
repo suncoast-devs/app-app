@@ -9,9 +9,11 @@ yarn create app-app [<flags>]
 To generate your new project:
 
 ```bash
-mkdir cool-project-name
+yarn create app-app --alpha cool-project-name
 cd cool-project-name
-yarn create app-app --alpha
+
+atom .
+yarn start
 ```
 
 For the `alpha` stack, you might want to install `tidy-html5`, and the [Tidy Linter](https://atom.io/packages/linter-tidy) for Atom:

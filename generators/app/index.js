@@ -11,6 +11,8 @@ class AppApp extends Generator {
     super(args, options)
     this.argument('stack', { type: String, required: false })
     this.argument('ide', { type: String, required: false })
+    this.destinationRoot(this.options.name)
+    this.appname = this.determineAppname()
   }
 
   prompting () {
@@ -143,7 +145,7 @@ class AppApp extends Generator {
         const pkg = {
           private: true,
           scripts: {
-            deploy: this.props.webpack ? `yarn build && ${deployCmd}` : deployCmd
+            deploy: deployCmd
           }
         }
 
@@ -151,6 +153,8 @@ class AppApp extends Generator {
           pkg.scripts.start = 'webpack-dev-server'
           pkg.scripts.prebuild = 'rm -f public/index.html public/app-*.js public/vendor-*.js public/screen-*.css'
           pkg.scripts.build = 'NODE_ENV=production webpack --progress'
+          pkg.scripts.postbuild = 'cp public/index.html public/200.html'
+          pkg.scripts.predeploy = 'yarn build'
         } else {
           pkg.scripts.start = `browser-sync start --server 'public' --files 'public'`
         }
@@ -363,8 +367,8 @@ class AppApp extends Generator {
 
     this.log('Installing dependencies...')
 
-    this.yarnInstall(devDependencies, { 'saveDev': true })
-    this.yarnInstall(dependencies, { 'save': true })
+    this.yarnInstall(devDependencies, { 'dev': true })
+    this.yarnInstall(dependencies)
   }
 
   end () {
