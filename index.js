@@ -15,8 +15,6 @@ const IDE = require('./generators/app/ide')
 
 const packageJson = require('./package.json')
 
-console.log({ argv: process.argv })
-
 let projectName
 
 // TODO: Is there a way to provide option list programmatically from STACKS?

@@ -15,7 +15,7 @@ class AppApp extends Generator {
     this.appname = this.determineAppname()
   }
 
-  prompting () {
+  async prompting () {
     this.props = {
       stylelint: true,
       styleExt: 'css',
@@ -51,6 +51,17 @@ class AppApp extends Generator {
       } else {
         this.log(chalk.red.bold(`Unknown stack (${this.options.stack}). Supported stacks are: ${Object.keys(STACKS).join(', ')}`))
       }
+    } else {
+      await this.prompt({
+        type: 'list',
+        name: 'stack',
+        message: 'Which stack?',
+        default: 'delta',
+        choices: [
+          ..._.map(STACKS, (name, value) => ({ name, value })),
+          { name: 'None, I\'ll choose my own options.', value: null }
+        ]
+      }).then(props => { this.options.stack = props.stack })
     }
 
     switch (this.options.ide) {

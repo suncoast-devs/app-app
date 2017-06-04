@@ -9,7 +9,7 @@ yarn create app-app APP_NAME [<flags>]
 To generate your new project:
 
 ```bash
-yarn create app-app cool-project-name --alpha
+yarn create app-app cool-project-name
 cd cool-project-name
 
 atom .
@@ -22,30 +22,24 @@ For the `alpha` stack, you might want to install `tidy-html5`, and the [Tidy Lin
 brew install tidy-html5
 ```
 
-## Pre-defined stacks
-
-**This is a work in progress, not all stacks functional.**
-
-Optionally, you can specify a stack name, like: `alpha`, `beta`, `gamma`, etc. to skip the prompts.
-
-#### `--alpha`, `-a`
+#### ALPHA
 
 - BrowserSync via `yarn start`
 - Deployment via `yarn deploy` to [Surge.sh](https://surge.sh)
 - Linting in Atom with `stylelint` and `htmlhint`
 
-#### `--beta`, `-b`
+#### BETA
 
 - Everything in the `alpha` stack
 - JavaScript (ES2015)
 - Linting in Atom with `eslint` using JS Standard
 
-#### `--gamma`, `-g`
+#### GAMMA
 
 - Everything in the `beta` stack
 - webpack based build (`yarn build`) with babel (still using BrowerSync)
 
-#### `--delta`, `-d`
+#### DELTA
 
 - Everything in the `gamma` stack
 - React
