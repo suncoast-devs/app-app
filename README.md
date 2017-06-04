@@ -1,19 +1,9 @@
 # App App!
 
-## Installation
-
-`npm i -g app-app`
-
-Install `tidy-html5`, and the [Tidy Linter](https://atom.io/packages/linter-tidy) for Atom:
-
-```bash
-brew install tidy-html5
-```
-
 ## Usage
 
 ```bash
-app-app [<flags>]
+yarn create app-app [<flags>]
 ```
 
 To generate your new project:
@@ -21,7 +11,13 @@ To generate your new project:
 ```bash
 mkdir cool-project-name
 cd cool-project-name
-app-app --alpha
+yarn create app-app --alpha
+```
+
+For the `alpha` stack, you might want to install `tidy-html5`, and the [Tidy Linter](https://atom.io/packages/linter-tidy) for Atom:
+
+```bash
+brew install tidy-html5
 ```
 
 ## Pre-defined stacks
@@ -32,8 +28,8 @@ Optionally, you can specify a stack name, like: `alpha`, `beta`, `gamma`, etc. t
 
 #### `--alpha`, `-a`
 
-- BrowserSync via `npm start`
-- Deployment via `npm run deploy` to [Surge.sh](https://surge.sh)
+- BrowserSync via `yarn start`
+- Deployment via `yarn deploy` to [Surge.sh](https://surge.sh)
 - Linting in Atom with `stylelint` and `htmlhint`
 
 #### `--beta`, `-b`
@@ -45,7 +41,7 @@ Optionally, you can specify a stack name, like: `alpha`, `beta`, `gamma`, etc. t
 #### `--gamma`, `-g`
 
 - Everything in the `beta` stack
-- webpack based build (`npm run build`) with babel (still using BrowerSync)
+- webpack based build (`yarn build`) with babel (still using BrowerSync)
 
 #### `--delta`, `-d`
 

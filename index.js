@@ -13,7 +13,7 @@ const IDE = require('./generators/app/ide')
 
 const cli = meow(`
 Usage
-  $ app-app <stack> <ide>
+  $ yarn create app-app <stack> <ide>
 
 Stacks
   ${_.map(STACKS, (v, k) => [_.padEnd(`-${k[0]}, --${k}`, 14), v].join('  ')).join('\n  ')}
@@ -22,7 +22,7 @@ Ide
   --vscode        Add some basic tasks in Visual Studio Code
 
 Examples
-  $ app-app --alpha hello-world
+  $ yarn create app-app --alpha hello-world
 `, {
   alias: _.keys(STACKS).reduce((o, s) => { o[s[0]] = s; return o }, {}),
   boolean: _.keys(STACKS)
@@ -45,7 +45,7 @@ updateNotifier({
       } else {
         console.log(`
     Update available: ${update.current} → ${update.latest}
-    Run 'npm i -g app-app' to update.`)
+    Run 'yarn global upgrade create-app-app' to update.`)
       }
     }
   }

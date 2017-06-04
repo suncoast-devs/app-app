@@ -1,5 +1,5 @@
 {
-  "name": "app-app",
+  "name": "create-app-app",
   "version": "2.1.0",
   "description": "App App!",
   "bugs": {
@@ -17,7 +17,7 @@
   ],
   "main": "index.js",
   "bin": {
-    "app-app": "./index.js"
+    "create-app-app": "./index.js"
   },
   "keywords": [
     "app",
