@@ -24,35 +24,35 @@ brew install tidy-html5
 
 #### ALPHA
 
-- BrowserSync via `yarn start`
-- Deployment via `yarn deploy` to [Surge.sh](https://surge.sh)
-- Linting in Atom with `stylelint` and `htmlhint`
+* BrowserSync via `yarn start`
+* Deployment via `yarn deploy` to [Surge.sh](https://surge.sh)
+* Linting in Atom with `stylelint` and `htmlhint`
 
 #### BETA
 
-- Everything in the `alpha` stack
-- JavaScript (ES2015)
-- Linting in Atom with `eslint` using JS Standard
+* Everything in the `alpha` stack
+* JavaScript (ES2015)
+* Linting in Atom with `eslint` using JS Standard
 
 #### GAMMA
 
-- Everything in the `beta` stack
-- webpack based build (`yarn build`) with babel (still using BrowerSync)
+* Everything in the `beta` stack
+* webpack based build (`yarn build`) with babel (still using BrowerSync)
 
 #### DELTA
 
-- Everything in the `gamma` stack
-- React
-- Configure webpack and hot module reloading
+* Everything in the `gamma` stack
+* React
+* Configure webpack and hot module reloading
 
 ### TODO
 
-- [x] Alpha stack
-- [x] Beta stack
-- [x] Gamma stack
-- [x] Delta stack
-- [x] Vendor entry point and chunking
-- [ ] CLI lint and warnings before deploy
+* [x] Alpha stack
+* [x] Beta stack
+* [x] Gamma stack
+* [x] Delta stack
+* [x] Vendor entry point and chunking
+* [ ] CLI lint and warnings before deploy
 
 ## License
 

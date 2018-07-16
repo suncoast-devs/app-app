@@ -25,31 +25,47 @@ class AppApp extends Generator {
       vsCode: false
     }
 
-    let prompts = [{
-      type: 'confirm',
-      name: 'empty',
-      message: `This directory (${chalk.blue(this.destinationRoot())}) is ${chalk.red.bold('not')} empty. Should we bail?`,
-      default: true,
-      when: () => !emptyDir.sync(this.destinationRoot())
-    }, {
-      type: 'input',
-      name: 'title',
-      message: `What's your project's title?`,
-      default: _.startCase(this.appname),
-      when: (props) => !props.empty
-    }, {
-      type: 'confirm',
-      name: 'repo',
-      message: 'Create GitHub repository?',
-      default: true,
-      when: (props) => !props.empty
-    }]
+    let prompts = [
+      {
+        type: 'confirm',
+        name: 'empty',
+        message: `This directory (${chalk.blue(
+          this.destinationRoot()
+        )}) is ${chalk.red.bold('not')} empty. Should we bail?`,
+        default: true,
+        when: () => !emptyDir.sync(this.destinationRoot())
+      },
+      {
+        type: 'input',
+        name: 'title',
+        message: `What's your project's title?`,
+        default: _.startCase(this.appname),
+        when: props => !props.empty
+      },
+      {
+        type: 'confirm',
+        name: 'repo',
+        message: 'Create GitHub repository?',
+        default: true,
+        when: props => !props.empty
+      }
+    ]
 
     if (this.options.stack) {
       if (STACKS.hasOwnProperty(this.options.stack)) {
-        this.log(`Using ${chalk.yellow.bold(this.options.stack.toUpperCase())}: ${STACKS[this.options.stack]}`)
+        this.log(
+          `Using ${chalk.yellow.bold(this.options.stack.toUpperCase())}: ${
+            STACKS[this.options.stack]
+          }`
+        )
       } else {
-        this.log(chalk.red.bold(`Unknown stack (${this.options.stack}). Supported stacks are: ${Object.keys(STACKS).join(', ')}`))
+        this.log(
+          chalk.red.bold(
+            `Unknown stack (${
+              this.options.stack
+            }). Supported stacks are: ${Object.keys(STACKS).join(', ')}`
+          )
+        )
       }
     } else {
       await this.prompt({
@@ -59,9 +75,11 @@ class AppApp extends Generator {
         default: 'delta',
         choices: [
           ..._.map(STACKS, (name, value) => ({ name, value })),
-          { name: 'None, I\'ll choose my own options.', value: null }
+          { name: "None, I'll choose my own options.", value: null }
         ]
-      }).then(props => { this.options.stack = props.stack })
+      }).then(props => {
+        this.options.stack = props.stack
+      })
     }
 
     switch (this.options.ide) {
@@ -91,34 +109,38 @@ class AppApp extends Generator {
         this.props.styleExt = 'scss'
         break
       default:
-        prompts.push({
-          type: 'confirm',
-          name: 'webpack',
-          message: 'Use webpack workflow?',
-          default: true,
-          when: (props) => !props.empty
-        }, {
-          type: 'list',
-          name: 'styleExt',
-          message: 'Which flavor of CSS do you prefer?',
-          default: 'sass',
-          choices: [
-            { name: 'SASS', value: 'sass' },
-            { name: 'SCSS', value: 'scss' },
-            { name: 'None, just plain CSS, thanks.', value: 'css' }
-          ],
-          when: (props) => !props.empty && props.webpack
-        }, {
-          type: 'confirm',
-          name: 'react',
-          message: 'Use React?',
-          default: true,
-          when: (props) => !props.empty && props.webpack
-        })
+        prompts.push(
+          {
+            type: 'confirm',
+            name: 'webpack',
+            message: 'Use webpack workflow?',
+            default: true,
+            when: props => !props.empty
+          },
+          {
+            type: 'list',
+            name: 'styleExt',
+            message: 'Which flavor of CSS do you prefer?',
+            default: 'sass',
+            choices: [
+              { name: 'SASS', value: 'sass' },
+              { name: 'SCSS', value: 'scss' },
+              { name: 'None, just plain CSS, thanks.', value: 'css' }
+            ],
+            when: props => !props.empty && props.webpack
+          },
+          {
+            type: 'confirm',
+            name: 'react',
+            message: 'Use React?',
+            default: true,
+            when: props => !props.empty && props.webpack
+          }
+        )
         break
     }
 
-    return this.prompt(prompts).then((props) => {
+    return this.prompt(prompts).then(props => {
       if (props.empty) {
         this.log(`Whew... ${chalk.green('that was a close one.')} Bye!`)
         process.exit(0)
@@ -132,11 +154,16 @@ class AppApp extends Generator {
   }
 
   get username () {
-    return (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
+    return (process.env.USER || process.env.UserName).replace(
+      /[^a-zA-Z0-9+]/g,
+      '-'
+    )
   }
 
   get domainName () {
-    return `${_.kebabCase(this.appname)}.${this.username}.surge.sh`.toLowerCase()
+    return `${_.kebabCase(this.appname)}.${
+      this.username
+    }.surge.sh`.toLowerCase()
   }
 
   get writing () {
@@ -162,7 +189,8 @@ class AppApp extends Generator {
 
         if (this.props.webpack) {
           pkg.scripts.start = 'webpack-dev-server'
-          pkg.scripts.prebuild = 'rm -f public/index.html public/app-*.js public/vendor-*.js public/screen-*.css'
+          pkg.scripts.prebuild =
+            'rm -f public/index.html public/app-*.js public/vendor-*.js public/screen-*.css'
           pkg.scripts.build = 'NODE_ENV=production webpack --progress'
           pkg.scripts.postbuild = 'cp public/index.html public/200.html'
           pkg.scripts.predeploy = 'yarn build'
@@ -176,7 +204,7 @@ class AppApp extends Generator {
       babelRC () {
         if (this.props.babel) {
           const config = {
-            presets: [['es2015', { 'modules': false }], 'stage-0'],
+            presets: [['es2015', { modules: false }], 'stage-0'],
             rules: [],
             plugins: []
           }
@@ -261,7 +289,9 @@ class AppApp extends Generator {
         } else if (this.props.eslint) {
           this.fs.copyTpl(
             this.templatePath('index.js'),
-            this.destinationPath(this.props.webpack ? 'src/index.js' : 'public/main.js'),
+            this.destinationPath(
+              this.props.webpack ? 'src/index.js' : 'public/main.js'
+            ),
             this.props
           )
         }
@@ -269,17 +299,21 @@ class AppApp extends Generator {
 
       html () {
         this.fs.copyTpl(
-          this.templatePath(this.props.webpack ? 'index.webpack.html' : 'index.simple.html'),
-          this.destinationPath(this.props.webpack ? 'src/index.html' : 'public/index.html'),
+          this.templatePath(
+            this.props.webpack ? 'index.webpack.html' : 'index.simple.html'
+          ),
+          this.destinationPath(
+            this.props.webpack ? 'src/index.html' : 'public/index.html'
+          ),
           this.props
         )
       },
 
       favIcon () {
         this.fs.copy(
-            this.templatePath('favicon.ico'),
-            this.destinationPath('public/favicon.ico')
-          )
+          this.templatePath('favicon.ico'),
+          this.destinationPath('public/favicon.ico')
+        )
       },
 
       readme () {
@@ -349,10 +383,7 @@ class AppApp extends Generator {
       )
 
       if (this.props.sass) {
-        devDependencies.push(
-          'node-sass',
-          'sass-loader'
-        )
+        devDependencies.push('node-sass', 'sass-loader')
       }
     }
 
@@ -367,9 +398,7 @@ class AppApp extends Generator {
     const dependencies = []
 
     if (this.props.webpack) {
-      dependencies.push(
-        'whatwg-fetch'
-      )
+      dependencies.push('whatwg-fetch')
     }
 
     if (this.props.react) {
@@ -383,7 +412,7 @@ class AppApp extends Generator {
 
     this.log('Installing dependencies...')
 
-    this.yarnInstall(devDependencies, { 'dev': true })
+    this.yarnInstall(devDependencies, { dev: true })
     this.yarnInstall(dependencies)
   }
 
@@ -392,8 +421,18 @@ class AppApp extends Generator {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('hub', ['create', '-h', this.props.website, _.kebabCase(this.appname)])
-      this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
+      this.spawnCommandSync('hub', [
+        'create',
+        '-h',
+        this.props.website,
+        _.kebabCase(this.appname)
+      ])
+      this.spawnCommandSync('git', [
+        'push',
+        '--set-upstream',
+        'origin',
+        'master'
+      ])
     }
   }
 }
