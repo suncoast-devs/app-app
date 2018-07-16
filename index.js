@@ -25,7 +25,7 @@ const program = new commander.Command(packageJson.name)
   .option('-b, --beta', STACKS.beta)
   .option('-g, --gamma', STACKS.gamma)
   .option('-c, --delta', STACKS.delta)
-  .option('--vscode', IDE.vscode)
+  .option('--no-vscode', IDE.noVSCode)
   .usage(`${chalk.green('<project-directory>')} [options]`)
   .action(name => {
     projectName = name

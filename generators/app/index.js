@@ -22,7 +22,7 @@ class AppApp extends Generator {
       eslint: true,
       react: true,
       webpack: true,
-      vsCode: false
+      vsCode: true
     }
 
     let prompts = [
@@ -83,11 +83,11 @@ class AppApp extends Generator {
     }
 
     switch (this.options.ide) {
-      case 'vscode':
-        this.props.vsCode = true
+      case 'noVSCode':
+        this.props.vsCode = false
         break
       default:
-        this.props.vsCode = false
+        this.props.vsCode = true
         break
     }
 
