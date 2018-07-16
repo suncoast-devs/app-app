@@ -3,26 +3,20 @@
   "version": "3.3.0",
   "description": "App App!",
   "bugs": {
-    "url": "https://github.com/tiy-tpa-fee/app-app/issues"
+    "url": "https://github.com/suncoast-devs/app-app/issues"
   },
-  "homepage": "https://github.com/tiy-tpa-fee/app-app#readme",
+  "homepage": "https://github.com/suncoast-devs/app-app#readme",
   "author": {
     "name": "Jason L Perry",
-    "email": "jasper@ambethia.com",
+    "email": "jason@suncoast.io",
     "url": "https://github.com/ambethia"
   },
-  "files": [
-    "generators",
-    "index.js"
-  ],
+  "files": ["generators", "index.js"],
   "main": "index.js",
   "bin": {
     "create-app-app": "./index.js"
   },
-  "keywords": [
-    "app",
-    "yeoman-generator"
-  ],
+  "keywords": ["app", "yeoman-generator"],
   "dependencies": {
     "chalk": "^1.0.0",
     "commander": "^2.9.0",
@@ -43,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tiy-tpa-fee/app-app.git"
+    "url": "git+https://github.com/suncoast-devs/app-app.git"
   },
   "license": "MIT"
 }
