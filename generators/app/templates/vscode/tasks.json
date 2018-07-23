@@ -17,6 +17,10 @@
      {   
          "taskName": "Edge",
          "args": ["\"${workspaceRoot}\\public\\index.html\""]
+     },
+     {
+         "taskName":"Browser-Sync",
+         "args":["browser-sync start --server \"public\" --files \"public\""]
      }   
     ]
 }

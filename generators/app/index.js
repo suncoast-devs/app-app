@@ -136,7 +136,7 @@ class AppApp extends Generator {
   }
 
   get domainName () {
-    return `${_.kebabCase(this.appname)}.${this.username}.surge.sh`.toLowerCase()
+    return `${_.kebabCase(this.appname)}.${this.username}.surge.sh`.toLowerCase
   }
 
   get writing () {
@@ -167,7 +167,7 @@ class AppApp extends Generator {
           pkg.scripts.postbuild = 'cp public/index.html public/200.html'
           pkg.scripts.predeploy = 'yarn build'
         } else {
-          pkg.scripts.start = `browser-sync start --server 'public' --files 'public'`
+          pkg.scripts.start = `browser-sync start --server \"public\" --files \"public\"`
         }
 
         this.fs.writeJSON('package.json', pkg)
