@@ -1,13 +1,6 @@
 # dependencies
 node_modules
 
-<% if ( webpack ) { %># production
-public/app-*.js
-public/vendor-*.js
-public/screen-*.css
-public/index.html
-
-<% } %>
 # misc
 .DS_Store
 npm-debug.log

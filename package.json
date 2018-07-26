@@ -1,6 +1,6 @@
 {
-  "name": "create-app-app",
-  "version": "3.3.0",
+  "name": "app-app",
+  "version": "4.0.0",
   "description": "App App!",
   "bugs": {
     "url": "https://github.com/suncoast-devs/app-app/issues"
@@ -14,7 +14,7 @@
   "files": ["generators", "index.js"],
   "main": "index.js",
   "bin": {
-    "create-app-app": "./index.js"
+    "app-app": "./index.js"
   },
   "keywords": ["app", "yeoman-generator"],
   "dependencies": {

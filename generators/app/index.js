@@ -18,10 +18,7 @@ class AppApp extends Generator {
   async prompting () {
     this.props = {
       stylelint: true,
-      styleExt: 'css',
       eslint: true,
-      react: true,
-      webpack: true,
       vsCode: true
     }
 
@@ -72,10 +69,10 @@ class AppApp extends Generator {
         type: 'list',
         name: 'stack',
         message: 'Which stack?',
-        default: 'delta',
+        default: 'alpha',
         choices: [
-          ..._.map(STACKS, (name, value) => ({ name, value })),
-          { name: "None, I'll choose my own options.", value: null }
+          ..._.map(STACKS, (name, value) => ({ name, value }))
+          // { name: "None, I'll choose my own options.", value: null }
         ]
       }).then(props => {
         this.options.stack = props.stack
@@ -94,49 +91,10 @@ class AppApp extends Generator {
     switch (this.options.stack) {
       case 'alpha':
         this.props.eslint = false
-        this.props.react = false
-        this.props.webpack = false
         break
       case 'beta':
-        this.props.react = false
-        this.props.webpack = false
-        break
-      case 'gamma':
-        this.props.react = false
-        this.props.styleExt = 'scss'
-        break
-      case 'delta':
-        this.props.styleExt = 'scss'
         break
       default:
-        prompts.push(
-          {
-            type: 'confirm',
-            name: 'webpack',
-            message: 'Use webpack workflow?',
-            default: true,
-            when: props => !props.empty
-          },
-          {
-            type: 'list',
-            name: 'styleExt',
-            message: 'Which flavor of CSS do you prefer?',
-            default: 'sass',
-            choices: [
-              { name: 'SASS', value: 'sass' },
-              { name: 'SCSS', value: 'scss' },
-              { name: 'None, just plain CSS, thanks.', value: 'css' }
-            ],
-            when: props => !props.empty && props.webpack
-          },
-          {
-            type: 'confirm',
-            name: 'react',
-            message: 'Use React?',
-            default: true,
-            when: props => !props.empty && props.webpack
-          }
-        )
         break
     }
 
@@ -146,8 +104,6 @@ class AppApp extends Generator {
         process.exit(0)
       } else {
         Object.assign(this.props, props)
-        this.props.babel = this.props.webpack
-        this.props.sass = ['scss', 'sass'].includes(this.props.styleExt)
         this.props.website = `http://${this.domainName}`
       }
     })
@@ -168,16 +124,6 @@ class AppApp extends Generator {
 
   get writing () {
     return {
-      webpack () {
-        if (this.props.webpack) {
-          this.fs.copyTpl(
-            this.templatePath('webpack.config.js'),
-            this.destinationPath('webpack.config.js'),
-            this.props
-          )
-        }
-      },
-
       packageJSON () {
         const deployCmd = `surge ./public --domain ${this.domainName}`
         const pkg = {
@@ -187,36 +133,9 @@ class AppApp extends Generator {
           }
         }
 
-        if (this.props.webpack) {
-          pkg.scripts.start = 'webpack-dev-server'
-          pkg.scripts.prebuild =
-            'rm -f public/index.html public/app-*.js public/vendor-*.js public/screen-*.css'
-          pkg.scripts.build = 'NODE_ENV=production webpack --progress'
-          pkg.scripts.postbuild = 'cp public/index.html public/200.html'
-          pkg.scripts.predeploy = 'yarn build'
-        } else {
-          pkg.scripts.start = `browser-sync start --server \"public\" --files \"public\"`
-        }
+        pkg.scripts.start = `browser-sync start --server "public" --files "public"`
 
         this.fs.writeJSON('package.json', pkg)
-      },
-
-      babelRC () {
-        if (this.props.babel) {
-          const config = {
-            presets: [['es2015', { modules: false }], 'stage-0'],
-            rules: [],
-            plugins: []
-          }
-
-          if (this.props.react) {
-            config.presets.push('react')
-            config.plugins.push('react-hot-loader/babel')
-            config.rules.push({ 'react/prop-types': 0 })
-          }
-
-          this.fs.writeJSON(this.destinationPath('.babelrc'), config)
-        }
       },
 
       esLintRC () {
@@ -224,15 +143,6 @@ class AppApp extends Generator {
           const config = {
             extends: ['standard'],
             rules: {}
-          }
-
-          if (this.props.babel) {
-            config.parser = 'babel-eslint'
-          }
-
-          if (this.props.react) {
-            config.extends.push('standard-react')
-            config.rules['react/prop-types'] = 0
           }
 
           this.fs.writeJSON(this.destinationPath('.eslintrc'), config)
@@ -260,38 +170,17 @@ class AppApp extends Generator {
       },
 
       styles () {
-        if (this.props.webpack) {
-          this.fs.copyTpl(
-            this.templatePath(`*.${this.props.styleExt}`),
-            this.destinationPath('src/styles'),
-            this.props
-          )
-        } else {
-          this.fs.copy(
-            this.templatePath('screen.css'),
-            this.destinationPath('public/screen.css')
-          )
-        }
+        this.fs.copy(
+          this.templatePath('screen.css'),
+          this.destinationPath('public/screen.css')
+        )
       },
 
       scripts () {
-        if (this.props.react) {
-          this.fs.copyTpl(
-            this.templatePath('react/index.js'),
-            this.destinationPath('src/index.js'),
-            this.props
-          )
-
-          this.fs.copy(
-            this.templatePath('react/App.js'),
-            this.destinationPath('src/components/App.js')
-          )
-        } else if (this.props.eslint) {
+        if (this.props.eslint) {
           this.fs.copyTpl(
             this.templatePath('index.js'),
-            this.destinationPath(
-              this.props.webpack ? 'src/index.js' : 'public/main.js'
-            ),
+            this.destinationPath('public/main.js'),
             this.props
           )
         }
@@ -299,12 +188,8 @@ class AppApp extends Generator {
 
       html () {
         this.fs.copyTpl(
-          this.templatePath(
-            this.props.webpack ? 'index.webpack.html' : 'index.simple.html'
-          ),
-          this.destinationPath(
-            this.props.webpack ? 'src/index.html' : 'public/index.html'
-          ),
+          this.templatePath('index.html'),
+          this.destinationPath('public/index.html'),
           this.props
         )
       },
@@ -355,65 +240,12 @@ class AppApp extends Generator {
       )
     }
 
-    if (this.props.babel) {
-      devDependencies.push(
-        'babel-core',
-        'babel-eslint',
-        'babel-loader',
-        'babel-polyfill',
-        'babel-preset-es2015',
-        'babel-preset-stage-0'
-      )
-    }
-
-    if (this.props.webpack) {
-      devDependencies.push(
-        'webpack',
-        'webpack-dev-server',
-        'webpack-merge',
-        'browser-sync-webpack-plugin',
-        'extract-text-webpack-plugin',
-        'html-webpack-plugin',
-        'file-loader',
-        'css-loader',
-        'style-loader',
-        'postcss-loader',
-        'raw-loader',
-        'autoprefixer'
-      )
-
-      if (this.props.sass) {
-        devDependencies.push('node-sass', 'sass-loader')
-      }
-    }
-
-    if (this.props.react) {
-      devDependencies.push(
-        'babel-preset-react',
-        'eslint-plugin-react',
-        'eslint-config-standard-react'
-      )
-    }
-
     const dependencies = []
-
-    if (this.props.webpack) {
-      dependencies.push('whatwg-fetch')
-    }
-
-    if (this.props.react) {
-      dependencies.push(
-        'react',
-        'react-dom',
-        'redbox-react',
-        'react-hot-loader@next'
-      )
-    }
 
     this.log('Installing dependencies...')
 
-    this.yarnInstall(devDependencies, { dev: true })
-    this.yarnInstall(dependencies)
+    this.npmInstall(devDependencies, { dev: true })
+    this.npmInstall(dependencies)
   }
 
   end () {

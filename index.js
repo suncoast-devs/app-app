@@ -23,8 +23,6 @@ const program = new commander.Command(packageJson.name)
   .arguments('<project-directory>')
   .option('-a, --alpha', STACKS.alpha)
   .option('-b, --beta', STACKS.beta)
-  .option('-g, --gamma', STACKS.gamma)
-  .option('-c, --delta', STACKS.delta)
   .option('--no-vscode', IDE.noVSCode)
   .usage(`${chalk.green('<project-directory>')} [options]`)
   .action(name => {
@@ -69,7 +67,7 @@ updateNotifier({
       } else {
         console.log(`
     Update available: ${update.current} → ${update.latest}
-    Run 'yarn global upgrade create-app-app' to update.`)
+    Run 'npm update -g app-app' to update.`)
       }
     }
   }
