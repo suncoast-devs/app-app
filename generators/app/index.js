@@ -26,9 +26,9 @@ class AppApp extends Generator {
       {
         type: 'confirm',
         name: 'empty',
-        message: `This directory (${chalk.blue(
-          this.destinationRoot()
-        )}) is ${chalk.red.bold('not')} empty. Should we bail?`,
+        message: `This directory (${chalk.blue(this.destinationRoot())}) is ${chalk.red.bold(
+          'not'
+        )} empty. Should we bail?`,
         default: true,
         when: () => !emptyDir.sync(this.destinationRoot())
       },
@@ -50,17 +50,11 @@ class AppApp extends Generator {
 
     if (this.options.stack) {
       if (STACKS.hasOwnProperty(this.options.stack)) {
-        this.log(
-          `Using ${chalk.yellow.bold(this.options.stack.toUpperCase())}: ${
-            STACKS[this.options.stack]
-          }`
-        )
+        this.log(`Using ${chalk.yellow.bold(this.options.stack.toUpperCase())}: ${STACKS[this.options.stack]}`)
       } else {
         this.log(
           chalk.red.bold(
-            `Unknown stack (${
-              this.options.stack
-            }). Supported stacks are: ${Object.keys(STACKS).join(', ')}`
+            `Unknown stack (${this.options.stack}). Supported stacks are: ${Object.keys(STACKS).join(', ')}`
           )
         )
       }
@@ -110,16 +104,11 @@ class AppApp extends Generator {
   }
 
   get username () {
-    return (process.env.USER || process.env.UserName).replace(
-      /[^a-zA-Z0-9+]/g,
-      '-'
-    )
+    return (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
   }
 
   get domainName () {
-    return `${_.kebabCase(this.appname)}.${
-      this.username
-    }.surge.sh`.toLowerCase()
+    return `${_.kebabCase(this.appname)}-${this.username}.surge.sh`.toLowerCase()
   }
 
   get writing () {
@@ -162,51 +151,29 @@ class AppApp extends Generator {
       },
 
       gitIgnore () {
-        this.fs.copyTpl(
-          this.templatePath('gitignore'),
-          this.destinationPath('.gitignore'),
-          this.props
-        )
+        this.fs.copyTpl(this.templatePath('gitignore'), this.destinationPath('.gitignore'), this.props)
       },
 
       styles () {
-        this.fs.copy(
-          this.templatePath('screen.css'),
-          this.destinationPath('public/screen.css')
-        )
+        this.fs.copy(this.templatePath('screen.css'), this.destinationPath('public/screen.css'))
       },
 
       scripts () {
         if (this.props.eslint) {
-          this.fs.copyTpl(
-            this.templatePath('index.js'),
-            this.destinationPath('public/main.js'),
-            this.props
-          )
+          this.fs.copyTpl(this.templatePath('index.js'), this.destinationPath('public/main.js'), this.props)
         }
       },
 
       html () {
-        this.fs.copyTpl(
-          this.templatePath('index.html'),
-          this.destinationPath('public/index.html'),
-          this.props
-        )
+        this.fs.copyTpl(this.templatePath('index.html'), this.destinationPath('public/index.html'), this.props)
       },
 
       favIcon () {
-        this.fs.copy(
-          this.templatePath('favicon.ico'),
-          this.destinationPath('public/favicon.ico')
-        )
+        this.fs.copy(this.templatePath('favicon.ico'), this.destinationPath('public/favicon.ico'))
       },
 
       readme () {
-        this.fs.copyTpl(
-          this.templatePath('README.md'),
-          this.destinationPath('README.md'),
-          this.props
-        )
+        this.fs.copyTpl(this.templatePath('README.md'), this.destinationPath('README.md'), this.props)
       },
 
       vsCode () {
@@ -222,12 +189,7 @@ class AppApp extends Generator {
   }
 
   install () {
-    const devDependencies = [
-      'browser-sync',
-      'stylelint',
-      'stylelint-config-standard',
-      'surge'
-    ]
+    const devDependencies = ['browser-sync', 'stylelint', 'stylelint-config-standard', 'surge']
 
     if (this.props.eslint) {
       devDependencies.push(
@@ -253,18 +215,8 @@ class AppApp extends Generator {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('hub', [
-        'create',
-        '-h',
-        this.props.website,
-        _.kebabCase(this.appname)
-      ])
-      this.spawnCommandSync('git', [
-        'push',
-        '--set-upstream',
-        'origin',
-        'master'
-      ])
+      this.spawnCommandSync('hub', ['create', '-h', this.props.website, _.kebabCase(this.appname)])
+      this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
   }
 }
