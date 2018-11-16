@@ -108,13 +108,13 @@ class AppApp extends Generator {
   }
 
   get domainName () {
-    return `${_.kebabCase(this.appname)}-${this.username}.surge.sh`.toLowerCase()
+    return `${this.username}.github.io/${_.kebabCase(this.appname)}/`.toLowerCase()
   }
 
   get writing () {
     return {
       packageJSON () {
-        const deployCmd = `surge ./public --domain ${this.domainName}`
+        const deployCmd = `gh-pages -d public && echo 'Your site was deployed to ${this.domainName}'`
         const pkg = {
           private: true,
           scripts: {
@@ -189,7 +189,7 @@ class AppApp extends Generator {
   }
 
   install () {
-    const devDependencies = ['browser-sync', 'stylelint', 'stylelint-config-standard', 'surge']
+    const devDependencies = ['browser-sync', 'stylelint', 'stylelint-config-standard', 'gh-pages']
 
     if (this.props.eslint) {
       devDependencies.push(

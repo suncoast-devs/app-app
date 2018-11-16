@@ -26,7 +26,7 @@ brew install tidy-html5
 #### ALPHA
 
 * BrowserSync via `npm start`
-* Deployment via `npm run deploy` to [Surge.sh](https://surge.sh)
+* Deployment via `npm run deploy` to [GitHub Pages](https://pages.github.com)
 * Linting in Atom with `stylelint` and `htmlhint`
 
 #### BETA
