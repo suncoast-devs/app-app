@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/screen.css">
   </head>
   <body>
-    <h1>Hello, World!</h1><% if (eslint) {%>
+    <h1 class='hello-world'><% if (!eslint) { %>Hello, World!<% } %></h1><% if (eslint) {%>
     <script src="/main.js" charset="utf-8"></script><% } %>
   </body>
 </html>
