@@ -5,6 +5,7 @@ const emptyDir = require('empty-dir')
 const chalk = require('chalk')
 const _ = require('lodash')
 const STACKS = require('./stacks')
+const getRepoInfo = require('git-repo-info')
 
 class AppApp extends Generator {
   constructor (args, options) {
@@ -43,7 +44,7 @@ class AppApp extends Generator {
         type: 'confirm',
         name: 'repo',
         message: 'Create GitHub repository?',
-        default: true,
+        default: !getRepoInfo().sha,
         when: props => !props.empty
       }
     ]
