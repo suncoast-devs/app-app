@@ -219,6 +219,17 @@ class AppApp extends Generator {
       this.spawnCommandSync('hub', ['create', '-h', this.props.website, _.kebabCase(this.appname)])
       this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
+
+    console.log()
+    console.log(`Success! Created "${_.startCase(this.appname)}"`)
+    console.log()
+    console.log()
+    console.log('We suggest that you begin by typing:')
+    console.log()
+    console.log(chalk.cyan('  cd'), path.basename(this.destinationRoot()))
+    console.log(`  ${chalk.cyan(`npm start`)}`)
+    console.log()
+    console.log()
   }
 }
 
