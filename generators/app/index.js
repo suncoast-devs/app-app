@@ -5,6 +5,7 @@ const emptyDir = require('empty-dir')
 const chalk = require('chalk')
 const _ = require('lodash')
 const STACKS = require('./stacks')
+const getRepoInfo = require('git-repo-info')
 
 class AppApp extends Generator {
   constructor (args, options) {
@@ -43,7 +44,7 @@ class AppApp extends Generator {
         type: 'confirm',
         name: 'repo',
         message: 'Create GitHub repository?',
-        default: true,
+        default: !getRepoInfo().sha,
         when: props => !props.empty
       }
     ]
@@ -218,6 +219,17 @@ class AppApp extends Generator {
       this.spawnCommandSync('hub', ['create', '-h', this.props.website, _.kebabCase(this.appname)])
       this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
+
+    console.log()
+    console.log(`Success! Created "${_.startCase(this.appname)}"`)
+    console.log()
+    console.log()
+    console.log('We suggest that you begin by typing:')
+    console.log()
+    console.log(chalk.cyan('  cd'), path.basename(this.destinationRoot()))
+    console.log(`  ${chalk.cyan(`npm start`)}`)
+    console.log()
+    console.log()
   }
 }
 
