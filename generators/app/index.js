@@ -6,6 +6,7 @@ const chalk = require('chalk')
 const _ = require('lodash')
 const STACKS = require('./stacks')
 const getRepoInfo = require('git-repo-info')
+const path = require('path')
 
 class AppApp extends Generator {
   constructor (args, options) {
