@@ -7,23 +7,25 @@ const _ = require('lodash')
 const STACKS = require('./stacks')
 const getRepoInfo = require('git-repo-info')
 const path = require('path')
+const fs = require('fs')
+const commandExistsSync = require('command-exists').sync
 
 class AppApp extends Generator {
   constructor (args, options) {
     super(args, options)
+
+    this.props = {
+      useYarn: commandExistsSync('yarn'),
+      haveNetlify: commandExistsSync('netlify'),
+      haveGitHubPages: commandExistsSync('gh-pages')
+    }
+
     this.argument('stack', { type: String, required: false })
-    this.argument('ide', { type: String, required: false })
     this.destinationRoot(this.options.name)
     this.appname = this.determineAppname()
   }
 
   async prompting () {
-    this.props = {
-      stylelint: true,
-      eslint: true,
-      vsCode: true
-    }
-
     let prompts = [
       {
         type: 'confirm',
@@ -50,6 +52,42 @@ class AppApp extends Generator {
       }
     ]
 
+    if (this.props.useYarn) {
+      prompts.push({
+        type: 'confirm',
+        name: 'useYarn',
+        message: 'Use yarn instead of npm?',
+        default: true
+      })
+    }
+
+    if (this.props.haveNetlify && !this.props.haveGitHubPages) {
+      this.props.deployTool = 'netlify'
+    }
+
+    if (!this.props.haveNetlify && this.props.haveGitHubPages) {
+      this.props.deployTool = 'gh-pages'
+    }
+
+    if (this.props.haveNetlify && this.props.haveGitHubPages) {
+      prompts.push({
+        type: 'list',
+        name: 'deployTool',
+        message: 'Which deployment tool?',
+        default: 'netlify',
+        choices: [
+          {
+            name: 'Netlify',
+            value: 'netlify'
+          },
+          {
+            name: 'GitHub Pages',
+            value: 'gh-pages'
+          }
+        ]
+      })
+    }
+
     if (this.options.stack) {
       if (STACKS.hasOwnProperty(this.options.stack)) {
         this.log(`Using ${chalk.yellow.bold(this.options.stack.toUpperCase())}: ${STACKS[this.options.stack]}`)
@@ -68,31 +106,16 @@ class AppApp extends Generator {
         default: 'alpha',
         choices: [
           ..._.map(STACKS, (name, value) => ({ name, value }))
-          // { name: "None, I'll choose my own options.", value: null }
         ]
       }).then(props => {
         this.options.stack = props.stack
       })
     }
 
-    switch (this.options.ide) {
-      case 'noVSCode':
-        this.props.vsCode = false
-        break
-      default:
-        this.props.vsCode = true
-        break
-    }
+    this.sourceRoot(this.templatePath(this.options.stack))
 
-    switch (this.options.stack) {
-      case 'alpha':
-        this.props.eslint = false
-        break
-      case 'beta':
-        break
-      default:
-        break
-    }
+    this.stackCommonConfig = JSON.parse(fs.readFileSync(this.templatePath(`../../config/common.json`)))
+    this.stackConfig = JSON.parse(fs.readFileSync(this.templatePath(`../../config/${this.options.stack}.json`)))
 
     return this.prompt(prompts).then(props => {
       if (props.empty) {
@@ -100,7 +123,6 @@ class AppApp extends Generator {
         process.exit(0)
       } else {
         Object.assign(this.props, props)
-        this.props.website = `http://${this.domainName}`
       }
     })
   }
@@ -109,115 +131,69 @@ class AppApp extends Generator {
     return (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
   }
 
-  get domainName () {
-    return `${_.kebabCase(this.appname)}-${this.username}.surge.sh`.toLowerCase()
+  get hostName () {
+    return `${_.kebabCase(this.appname)}-${this.username}`
+  }
+
+  get deployURL () {
+    return `https://${this.hostName}.netlify.com`
+  }
+
+  get deployCommand () {
+    switch (this.props && this.props.deployTool) {
+      case 'gh-pages':
+        return `gh-pages -d ${this.stackConfig.deployDir}`
+      case 'netlify':
+        return `netlify deploy --prod --dir=${this.stackConfig.deployDir}`
+      default:
+        return `echo 'You have no deployment tool configured`
+    }
   }
 
   get writing () {
     return {
-      packageJSON () {
-        const deployCmd = `surge ./public --domain ${this.domainName}`
-        const pkg = {
-          private: true,
-          scripts: {
-            deploy: deployCmd
-          }
+      all () {
+        const processInstallFiles = (files) => {
+          Object.entries(files).forEach(entry => {
+            const [source, dest] = entry
+
+            this.fs.copyTpl(this.templatePath(source), this.destinationPath(dest), this)
+          })
         }
 
-        pkg.scripts.start = `browser-sync start --server "public" --files "public"`
-
-        this.fs.writeJSON('package.json', pkg)
-      },
-
-      esLintRC () {
-        if (this.props.eslint) {
-          const config = {
-            extends: ['standard'],
-            rules: {}
-          }
-
-          this.fs.writeJSON(this.destinationPath('.eslintrc'), config)
-        }
-      },
-
-      styleLintRC () {
-        if (this.props.stylelint) {
-          const config = {
-            extends: 'stylelint-config-standard',
-            rules: {
-              'declaration-empty-line-before': 'never'
-            }
-          }
-          this.fs.writeJSON(this.destinationPath('.stylelintrc'), config)
-        }
-      },
-
-      gitIgnore () {
-        this.fs.copyTpl(this.templatePath('gitignore'), this.destinationPath('.gitignore'), this.props)
-      },
-
-      styles () {
-        this.fs.copy(this.templatePath('screen.css'), this.destinationPath('public/screen.css'))
-      },
-
-      scripts () {
-        if (this.props.eslint) {
-          this.fs.copyTpl(this.templatePath('index.js'), this.destinationPath('public/main.js'), this.props)
-        }
-      },
-
-      html () {
-        this.fs.copyTpl(this.templatePath('index.html'), this.destinationPath('public/index.html'), this.props)
-      },
-
-      favIcon () {
-        this.fs.copy(this.templatePath('favicon.ico'), this.destinationPath('public/favicon.ico'))
-      },
-
-      readme () {
-        this.fs.copyTpl(this.templatePath('README.md'), this.destinationPath('README.md'), this.props)
-      },
-
-      vsCode () {
-        if (this.props.vsCode) {
-          this.fs.copyTpl(
-            this.templatePath('vscode/tasks.json'),
-            this.destinationPath('.vscode/tasks.json'),
-            this.props
-          )
-        }
+        processInstallFiles(this.stackCommonConfig.installFiles)
+        processInstallFiles(this.stackConfig.installFiles)
       }
     }
   }
 
   install () {
-    const devDependencies = ['browser-sync', 'stylelint', 'stylelint-config-standard', 'surge']
+    const installMethod = this.props.useYarn ? this.yarnInstall.bind(this) : this.npmInstall.bind(this)
+    const devInstallOptions = this.props.useYarn ? { 'dev': true } : { 'save-dev': true }
 
-    if (this.props.eslint) {
-      devDependencies.push(
-        'eslint',
-        'eslint-config-standard',
-        'eslint-plugin-promise',
-        'eslint-plugin-import',
-        'eslint-plugin-node',
-        'eslint-plugin-standard'
-      )
+    const devDependencies = this.stackConfig.devDependencies || []
+    const dependencies = this.stackConfig.dependencies || []
+
+    this.log(`Installing development dependencies... ${chalk.cyan(devDependencies.join(', '))}`)
+    installMethod(devDependencies, devInstallOptions)
+
+    if (dependencies.length > 0) {
+      this.log(`Installing runtime dependencies... ${chalk.cyan(dependencies.join(', '))}`)
+      installMethod(dependencies)
     }
-
-    const dependencies = []
-
-    this.log('Installing dependencies...')
-
-    this.npmInstall(devDependencies, { dev: true })
-    this.npmInstall(dependencies)
   }
 
   end () {
+    if (this.props.deployTool === 'netlify') {
+      this.spawnCommandSync('netlify', ['sites:create', '--name', this.hostName])
+      this.spawnCommandSync('netlify', ['link', '--name', this.hostName])
+    }
+
     if (this.props.repo) {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('hub', ['create', '-h', this.props.website, _.kebabCase(this.appname)])
+      this.spawnCommandSync('hub', ['create', '-h', this.deployURL, _.kebabCase(this.appname)])
       this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
 
@@ -228,7 +204,7 @@ class AppApp extends Generator {
     console.log('We suggest that you begin by typing:')
     console.log()
     console.log(chalk.cyan('  cd'), path.basename(this.destinationRoot()))
-    console.log(`  ${chalk.cyan(`npm start`)}`)
+    console.log(`  ${chalk.cyan(`${this.props.useYarn ? 'yarn' : 'npm'} start`)}`)
     console.log()
     console.log()
   }

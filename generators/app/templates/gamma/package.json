@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "homepage" : "<%= deployURL %>",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "react-scripts build",
+    "deploy": "<%= deployCommand %>",
+    "postdeploy": "echo 'Your site was deployed to <%= deployURL %>'",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

@@ -4,7 +4,8 @@ node_modules
 # misc
 .DS_Store
 npm-debug.log
+/build
 
-<% if ( vsCode ) { %># vscode config settings
+<% if ( props.vsCode ) { %># vscode config settings
 .vscode
 <% } %>

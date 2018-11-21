@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "homepage" : "<%= deployURL %>",
+  "scripts": {
+    "deploy": "<%= deployCommand %>",
+    "postdeploy": "echo 'Your site was deployed to <%= deployURL %>'",
+    "start": "browser-sync start --server 'public' --files 'public'"
+  }
+}
