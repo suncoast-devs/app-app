@@ -23,6 +23,8 @@ For the `alpha` stack, you might want to install `tidy-html5`, and the [Tidy Lin
 brew install tidy-html5
 ```
 
+For deployment, install either the `gh-pages` or `netlify-cli` to your global packages. Example: `npm -g install netlify-cli`
+
 #### ALPHA
 
 * BrowserSync
