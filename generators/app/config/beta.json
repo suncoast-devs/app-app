@@ -1,5 +1,15 @@
 {
-  "devDependencies": ["browser-sync", "stylelint", "stylelint-config-standard", "eslint", "eslint-config-standard", "eslint-plugin-promise", "eslint-plugin-import", "eslint-plugin-node", "eslint-plugin-standard"],
+  "devDependencies": [
+    "browser-sync",
+    "stylelint",
+    "stylelint-config-standard",
+    "eslint",
+    "eslint-config-standard",
+    "eslint-plugin-promise",
+    "eslint-plugin-import",
+    "eslint-plugin-node",
+    "eslint-plugin-standard"
+  ],
   "dependencies": [],
   "deployDir": "public",
   "installFiles": {
