@@ -1,0 +1,22 @@
+{
+  "devDependencies": [
+    "browser-sync",
+    "stylelint",
+    "stylelint-config-standard",
+    "eslint",
+    "eslint-config-standard",
+    "eslint-plugin-promise",
+    "eslint-plugin-import",
+    "eslint-plugin-node",
+    "eslint-plugin-standard"
+  ],
+  "dependencies": [],
+  "deployDir": "public",
+  "installFiles": {
+    "public/index.html": "public/index.html",
+    "public/screen.css": "public/screen.css",
+    "public/main.js": "public/main.js",
+    "stylelintrc": ".stylelintrc",
+    "eslintrc": ".eslintrc"
+  }
+}

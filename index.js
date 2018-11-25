@@ -11,19 +11,14 @@ const env = yeoman.createEnv()
 env.register(require.resolve('./generators/app'), 'app')
 
 const STACKS = require('./generators/app/stacks')
-const IDE = require('./generators/app/ide')
 
 const packageJson = require('./package.json')
 
 let projectName
 
-// TODO: Is there a way to provide option list programmatically from STACKS?
-const program = new commander.Command(packageJson.name)
+let command = new commander.Command(packageJson.name)
   .version(packageJson.version)
   .arguments('<project-directory>')
-  .option('-a, --alpha', STACKS.alpha)
-  .option('-b, --beta', STACKS.beta)
-  .option('--no-vscode', IDE.noVSCode)
   .usage(`${chalk.green('<project-directory>')} [options]`)
   .action(name => {
     projectName = name
@@ -31,7 +26,15 @@ const program = new commander.Command(packageJson.name)
   .on('--help', () => {
     console.log(`    Only ${chalk.green('<project-directory>')} is required.`)
   })
-  .parse(process.argv)
+
+// Generate a list of stacks dynamically from the STACKS JSON
+Object.entries(STACKS).forEach(stackDetails => {
+  const [stack, description] = stackDetails
+
+  command = command.option(`-${stack[0]}, --${stack}`, description)
+})
+
+const program = command.parse(process.argv)
 
 if (typeof projectName === 'undefined') {
   console.error('Please specify the project directory:')
@@ -49,7 +52,6 @@ if (typeof projectName === 'undefined') {
 }
 
 const stack = _.findKey(_.pick(program, _.keys(STACKS)))
-const ide = _.findKey(_.pick(program, _.keys(IDE)))
 
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
@@ -63,7 +65,7 @@ updateNotifier({
     } else {
       if (update.current === update.latest) {
         fs.ensureDirSync(projectName)
-        env.run('app', { stack, ide, name: projectName })
+        env.run('app', { stack, name: projectName })
       } else {
         console.log(`
     Update available: ${update.current} → ${update.latest}

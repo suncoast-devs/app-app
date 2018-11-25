@@ -1,0 +1,14 @@
+{
+  "dependencies": ["react", "react-dom", "react-scripts"],
+  "devDependencies": ["stylelint", "stylelint-config-standard"],
+  "deployDir": "build",
+  "installFiles": {
+    "gitignore": ".gitignore",
+    "package.json": "package.json",
+    "public/index.html": "public/index.html",
+    "public/_redirects": "public/_redirects",
+    "src/App.js": "src/App.js",
+    "src/index.css": "src/index.css",
+    "src/index.js": "src/index.js"
+  }
+}

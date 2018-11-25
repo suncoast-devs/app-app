@@ -23,10 +23,12 @@ For the `alpha` stack, you might want to install `tidy-html5`, and the [Tidy Lin
 brew install tidy-html5
 ```
 
+For deployment, install either the `gh-pages` or `netlify-cli` to your global packages. Example: `npm -g install netlify-cli`
+
 #### ALPHA
 
-* BrowserSync via `npm start`
-* Deployment via `npm run deploy` to [Surge.sh](https://surge.sh)
+* BrowserSync
+* Deployment via GitHub Pages or Netlify
 * Linting in Atom with `stylelint` and `htmlhint`
 
 #### BETA

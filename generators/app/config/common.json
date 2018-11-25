@@ -1,0 +1,10 @@
+{
+  "deployDir": "public",
+  "installFiles": {
+    "../common/favicon.ico": "favicon.ico",
+    "../common/gitignore": ".gitignore",
+    "../common/package.json": "package.json",
+    "../common/README.md": "README.md",
+    "../common/vscode/tasks.json": ".vscode/tasks.json"
+  }
+}
