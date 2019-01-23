@@ -6,6 +6,7 @@
     "gitignore": ".gitignore",
     "package.json": "package.json",
     "public/index.html": "public/index.html",
+    "public/manifest.json": "public/manifest.json",
     "public/_redirects": "public/_redirects",
     "src/App.js": "src/App.js",
     "src/index.css": "src/index.css",

@@ -1,7 +1,7 @@
 {
   "deployDir": "public",
   "installFiles": {
-    "../common/favicon.ico": "favicon.ico",
+    "../common/favicon.ico": "public/favicon.ico",
     "../common/gitignore": ".gitignore",
     "../common/package.json": "package.json",
     "../common/README.md": "README.md",
