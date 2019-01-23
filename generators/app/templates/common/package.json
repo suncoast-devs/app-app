@@ -1,5 +1,6 @@
 {
   "private": true,
+  "name": "<%= appname %>",
   "homepage" : "<%= deployURL %>",
   "scripts": {
     "deploy": "<%= deployCommand %>",
