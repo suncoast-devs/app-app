@@ -9,6 +9,7 @@ const getRepoInfo = require('git-repo-info')
 const path = require('path')
 const fs = require('fs')
 const commandExistsSync = require('command-exists').sync
+const isBinaryFile = require("isbinaryfile").isBinaryFile
 
 class AppApp extends Generator {
   constructor (args, options) {
@@ -157,7 +158,16 @@ class AppApp extends Generator {
           Object.entries(files).forEach(entry => {
             const [source, dest] = entry
 
-            this.fs.copyTpl(this.templatePath(source), this.destinationPath(dest), this)
+            const data = fs.readFileSync(this.templatePath(source))
+            const stat = fs.lstatSync(this.templatePath(source))
+
+            isBinaryFile(data, stat.size).then(isBinary => {
+              if (isBinary) {
+                this.fs.copy(this.templatePath(source), this.destinationPath(dest))
+              } else {
+                this.fs.copyTpl(this.templatePath(source), this.destinationPath(dest), this)
+              }
+            })
           })
         }
 
