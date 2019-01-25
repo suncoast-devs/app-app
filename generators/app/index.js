@@ -136,6 +136,10 @@ class AppApp extends Generator {
     return `${_.kebabCase(this.appname)}-${this.username}`
   }
 
+  get packageAppName(){
+    return `${_.kebabCase(this.appname)}`
+  }
+
   get deployURL () {
     return `https://${this.hostName}.netlify.com`
   }
