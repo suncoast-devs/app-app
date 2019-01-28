@@ -215,7 +215,7 @@ class AppApp extends Generator {
 
   install () {
     const installMethod = this.props.useYarn ? this.yarnInstall.bind(this) : this.npmInstall.bind(this)
-    const devInstallOptions = this.props.useYarn ? { 'dev': true, 'enablePnp': true } : { 'save-dev': true }
+    const devInstallOptions = this.props.useYarn ? { 'dev': true } : { 'save-dev': true }
 
     const devDependencies = this.stackConfig.devDependencies || []
     const dependencies = this.stackConfig.dependencies || []
