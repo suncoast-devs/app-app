@@ -9,7 +9,7 @@ const getRepoInfo = require('git-repo-info')
 const path = require('path')
 const fs = require('fs')
 const commandExistsSync = require('command-exists').sync
-const isBinaryFile = require("isbinaryfile").isBinaryFile
+const isBinaryFile = require('isbinaryfile').isBinaryFile
 
 class AppApp extends Generator {
   constructor (args, options) {
@@ -18,11 +18,22 @@ class AppApp extends Generator {
     this.props = {
       useYarn: commandExistsSync('yarn'),
       haveNetlify: commandExistsSync('netlify'),
-      haveGitHubPages: commandExistsSync('gh-pages')
+      haveGitHubPages: commandExistsSync('gh-pages'),
+      haveSurge: commandExistsSync('surge')
+    }
+
+    if (commandExistsSync('hub')) {
+      this.props.gitHubUserName = require('child_process')
+        .spawnSync('hub', ['config', '--get', 'github.user'])
+        .stdout
+        .toString()
+        .replace(/\n/, '')
+    } else {
+      this.props.gitHubUserName = 'unknown'
     }
 
     this.argument('stack', { type: String, required: false })
-    this.destinationRoot(this.options.name)
+    this.destinationRoot(_.kebabCase(this.options.name))
     this.appname = this.determineAppname()
   }
 
@@ -53,39 +64,29 @@ class AppApp extends Generator {
       }
     ]
 
-    if (this.props.useYarn) {
-      prompts.push({
-        type: 'confirm',
-        name: 'useYarn',
-        message: 'Use yarn instead of npm?',
-        default: true
-      })
+    let deployToolChoices = []
+
+    if (this.props.haveNetlify) {
+      deployToolChoices.push({ name: 'Netlify', value: 'netlify' })
     }
 
-    if (this.props.haveNetlify && !this.props.haveGitHubPages) {
-      this.props.deployTool = 'netlify'
+    if (this.props.haveGitHubPages) {
+      deployToolChoices.push({ name: 'GitHub Pages', value: 'gh-pages' })
     }
 
-    if (!this.props.haveNetlify && this.props.haveGitHubPages) {
-      this.props.deployTool = 'gh-pages'
+    if (this.props.haveSurge) {
+      deployToolChoices.push({ name: 'Surge', value: 'surge' })
     }
 
-    if (this.props.haveNetlify && this.props.haveGitHubPages) {
+    deployToolChoices.push({ name: 'None', value: 'none' })
+
+    if (deployToolChoices.length > 1) {
       prompts.push({
         type: 'list',
         name: 'deployTool',
         message: 'Which deployment tool?',
         default: 'netlify',
-        choices: [
-          {
-            name: 'Netlify',
-            value: 'netlify'
-          },
-          {
-            name: 'GitHub Pages',
-            value: 'gh-pages'
-          }
-        ]
+        choices: deployToolChoices
       })
     }
 
@@ -118,7 +119,7 @@ class AppApp extends Generator {
     this.stackCommonConfig = JSON.parse(fs.readFileSync(this.templatePath(`../../config/common.json`)))
     this.stackConfig = JSON.parse(fs.readFileSync(this.templatePath(`../../config/${this.options.stack}.json`)))
 
-    return this.prompt(prompts).then(props => {
+    const results = this.prompt(prompts).then(props => {
       if (props.empty) {
         this.log(`Whew... ${chalk.green('that was a close one.')} Bye!`)
         process.exit(0)
@@ -126,22 +127,51 @@ class AppApp extends Generator {
         Object.assign(this.props, props)
       }
     })
+
+    this.appname = _.kebabCase(this.appname)
+    return results
   }
 
   get username () {
+    if (this.props && this.props.gitHubUserName !== 'unknown') {
+      return this.props.gitHubUserName
+    }
+
     return (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
   }
 
   get hostName () {
-    return `${_.kebabCase(this.appname)}-${this.username}`
+    return `${this.appname}-${this.username}`
   }
 
-  get packageAppName(){
+  get packageAppName () {
     return `${_.kebabCase(this.appname)}`
   }
 
   get deployURL () {
-    return `https://${this.hostName}.netlify.com`
+    if (!this.props) {
+      return ''
+    }
+
+    if (this.props && this.props.deployURL) {
+      return this.props.deployURL
+    }
+
+    switch (this.props && this.props.deployTool) {
+      case 'surge':
+        this.props.deployURL = `https://${this.hostName}.surge.sh`
+        break
+      case 'gh-pages':
+        this.props.deployURL = `https://${this.props.gitHubUserName}.github.io/${this.appname}`
+        break
+      case 'netlify':
+        this.props.deployURL = `https://${this.hostName}.netlify.com`
+        break
+      default:
+        this.props.deployURL = 'nowhere'
+    }
+
+    return this.props.deployURL
   }
 
   get deployCommand () {
@@ -150,8 +180,10 @@ class AppApp extends Generator {
         return `gh-pages -d ${this.stackConfig.deployDir}`
       case 'netlify':
         return `netlify deploy --prod --dir=${this.stackConfig.deployDir}`
+      case 'surge':
+        return `surge ${this.stackConfig.deployDir} ${this.props.deployURL}`
       default:
-        return `echo 'You have no deployment tool configured`
+        return `echo You have no deployment tool configured`
     }
   }
 
@@ -183,7 +215,7 @@ class AppApp extends Generator {
 
   install () {
     const installMethod = this.props.useYarn ? this.yarnInstall.bind(this) : this.npmInstall.bind(this)
-    const devInstallOptions = this.props.useYarn ? { 'dev': true } : { 'save-dev': true }
+    const devInstallOptions = this.props.useYarn ? { 'dev': true, 'enablePnp': true } : { 'save-dev': true }
 
     const devDependencies = this.stackConfig.devDependencies || []
     const dependencies = this.stackConfig.dependencies || []
@@ -207,7 +239,7 @@ class AppApp extends Generator {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('hub', ['create', '-h', this.deployURL, _.kebabCase(this.appname)])
+      this.spawnCommandSync('hub', ['create', '-h', this.deployURL, this.appname])
       this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
 

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "<%= appname %>",
+  "name": "<%= packageAppName %>",
   "homepage" : "<%= deployURL %>",
   "scripts": {
     "start": "react-scripts start",
