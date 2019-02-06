@@ -64,7 +64,6 @@ updateNotifier({
       console.error(err)
     } else {
       if (update.current === update.latest) {
-        fs.ensureDirSync(projectName)
         env.run('app', { stack, name: projectName })
       } else {
         console.log(`
