@@ -23,13 +23,16 @@ class AppApp extends Generator {
     }
 
     if (commandExistsSync('hub')) {
-      this.props.gitHubUserName = require('child_process')
+      this.props.uniqueUserName = require('child_process')
         .spawnSync('hub', ['config', '--get', 'github.user'])
         .stdout
         .toString()
         .replace(/\n/, '')
-    } else {
-      this.props.gitHubUserName = 'unknown'
+        .replace(/ /, '')
+    }
+
+    if (!this.props.uniqueUserName || this.props.uniqueUserName.length === 0) {
+      this.props.uniqueUserName = this.processUserName
     }
 
     this.argument('stack', { type: String, required: false })
@@ -132,12 +135,12 @@ class AppApp extends Generator {
     return results
   }
 
-  get username () {
-    if (this.props && this.props.gitHubUserName !== 'unknown') {
-      return this.props.gitHubUserName
-    }
-
+  get processUserName () {
     return (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
+  }
+
+  get username () {
+    return this.props ? this.props.uniqueUserName : this.processUserName
   }
 
   get hostName () {
@@ -162,7 +165,7 @@ class AppApp extends Generator {
         this.props.deployURL = `https://${this.hostName}.surge.sh`
         break
       case 'gh-pages':
-        this.props.deployURL = `https://${this.props.gitHubUserName}.github.io/${this.appname}`
+        this.props.deployURL = `https://${this.username}.github.io/${this.appname}`
         break
       case 'netlify':
         this.props.deployURL = `https://${this.hostName}.netlify.com`
