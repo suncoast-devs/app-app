@@ -13,6 +13,7 @@
   },
   "files": [
     "generators",
+    "deploy.js",
     "index.js"
   ],
   "main": "index.js",
@@ -24,15 +25,18 @@
     "yeoman-generator"
   ],
   "dependencies": {
+    "axios": "^0.18.0",
     "chalk": "^2.4.2",
     "command-exists": "^1.2.8",
     "commander": "^2.19.0",
     "empty-dir": "^2.0.0",
     "fs-extra": "^7.0.1",
+    "git-remote-origin-url": "^3.0.0",
     "git-repo-info": "^2.1.0",
     "isbinaryfile": "^4.0.0",
     "lodash": "^4.17.11",
     "update-notifier": "^2.5.0",
+    "yaml": "^1.5.0",
     "yeoman-environment": "^2.3.4",
     "yeoman-generator": "^3.0.0"
   },

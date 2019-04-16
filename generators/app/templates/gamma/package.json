@@ -1,13 +1,11 @@
 {
   "private": true,
   "name": "<%= packageAppName %>",
-  "homepage" : "<%= deployURL %>",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "predeploy": "react-scripts build",
-    "deploy": "<%= deployCommand %>",
-    "postdeploy": "echo 'Your site was deployed to <%= deployURL %>'",
+    "deploy": "app-app --deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

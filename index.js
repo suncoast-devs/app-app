@@ -2,7 +2,6 @@
 'use strict'
 
 const _ = require('lodash')
-const fs = require('fs-extra')
 const chalk = require('chalk')
 const commander = require('commander')
 
@@ -23,6 +22,7 @@ let command = new commander.Command(packageJson.name)
   .action(name => {
     projectName = name
   })
+  .option('--deploy', 'Configure Deployment')
   .on('--help', () => {
     console.log(`    Only ${chalk.green('<project-directory>')} is required.`)
   })
@@ -35,6 +35,11 @@ Object.entries(STACKS).forEach(stackDetails => {
 })
 
 const program = command.parse(process.argv)
+
+if (program.deploy) {
+  require('./deploy')
+  return
+}
 
 if (typeof projectName === 'undefined') {
   console.error('Please specify the project directory:')
