@@ -1,4 +1,5 @@
-const localPackageJSONPath = process.env.PWD + '/package.json'
+const path = require('path')
+const localPackageJSONPath = path.join(process.cwd(), 'package.json')
 const inquirer = require('inquirer')
 const commandExistsSync = require('command-exists').sync
 const yaml = require('yaml')
