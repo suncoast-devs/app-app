@@ -16,8 +16,8 @@ const deploy = async () => {
     haveNetlify: commandExistsSync('netlify'),
     haveGitHubPages: commandExistsSync('gh-pages'),
     haveSurge: commandExistsSync('surge'),
-    appName: packageJson.name,
-    userName: (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-')
+    appName: packageJson.name.toLowerCase(),
+    userName: (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-').toLowerCase()
   }
 
   // If we have the hub tool
@@ -63,7 +63,7 @@ const deploy = async () => {
       packageJson.homepage = `https://${props.appName}-${props.userName}.surge.sh`
       break
     case 'gh-pages':
-      packageJson.homepage = `https://${props.githubAccount}.github.io/${props.appName}`
+      packageJson.homepage = `https://${props.githubAccount.toLowerCase()}.github.io/${props.appName}`
       break
     case 'netlify':
       packageJson.homepage = `https://${props.appName}-${props.userName}.netlify.com`
