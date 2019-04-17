@@ -131,24 +131,27 @@ const deploy = async () => {
 
   // If we have a github auth token we can set the hostname
   if (props.githubAuth) {
-    // Get the remote URL so we can determine the remote repo name
-    const origin = await gitRemoteOriginUrl()
+    try {
+      // Get the remote URL so we can determine the remote repo name
+      const origin = await gitRemoteOriginUrl()
+      const repo = origin.replace(/.*github.com\//, '').replace(/.git/, '')
 
-    const repo = origin.replace(/.*github.com\//, '').replace(/.git/, '')
-
-    // Use the github API to change the homepage for this repo
-    axios
-      .patch(
-        `https://api.github.com/repos/${repo}`,
-        { homepage: packageJson.homepage },
-        { headers: { Authorization: `token ${props.githubAuth}` } }
-      )
-      .then(() => {
-        console.log(chalk.green('Configured homepage for github project'))
-      })
-      .catch(error => {
-        console.log(chalk.red(`Received ${error} error from github`))
-      })
+      // Use the github API to change the homepage for this repo
+      axios
+        .patch(
+          `https://api.github.com/repos/${repo}`,
+          { homepage: packageJson.homepage },
+          { headers: { Authorization: `token ${props.githubAuth}` } }
+        )
+        .then(() => {
+          console.log(chalk.green('Configured homepage for github project'))
+        })
+        .catch(error => {
+          console.log(chalk.red(`Received ${error} error from github`))
+        })
+    } catch (error) {
+      console.log(chalk.red(`No github homepage configured, you'll have to do this manually later`))
+    }
   }
 
   // Write out a new package.json file
