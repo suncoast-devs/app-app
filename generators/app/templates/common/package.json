@@ -3,6 +3,7 @@
   "name": "<%= packageAppName %>",
   "scripts": {
     "start": "browser-sync start --server public --files public",
-    "deploy": "app-app --deploy"
+    "deploy": "echo 'To setup deployment run: yarn setup-deploy'",
+    "setup-deploy": "app-app --deploy && yarn deploy"
   }
 }

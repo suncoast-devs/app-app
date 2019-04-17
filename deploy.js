@@ -160,7 +160,7 @@ const deploy = async () => {
     if (error) {
       console.log(chalk.red(error))
     } else {
-      console.log(chalk.green(`*** Now configured to use ${answers.deployTool}. Run your deploy command again. ***`))
+      console.log(chalk.green(`Now configured to use ${answers.deployTool}.`))
     }
   })
 }
