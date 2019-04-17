@@ -64,17 +64,4 @@ const pkg = require('./package.json')
 updateNotifier({
   pkg,
   updateCheckInterval: 1, // Hourly
-  callback: (err, update) => {
-    if (err) {
-      console.error(err)
-    } else {
-      if (update.current === update.latest) {
-        env.run('app', { stack, name: projectName })
-      } else {
-        console.log(`
-    Update available: ${update.current} → ${update.latest}
-    Run 'npm update -g app-app' to update.`)
-      }
-    }
-  }
 }).notify()
