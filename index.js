@@ -61,7 +61,6 @@ const stack = _.findKey(_.pick(program, _.keys(STACKS)))
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
 
-updateNotifier({
-  pkg,
-  updateCheckInterval: 1, // Hourly
-}).notify()
+updateNotifier({ pkg }).notify()
+
+env.run('app', { stack, name: projectName })
