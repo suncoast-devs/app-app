@@ -22,13 +22,17 @@ const deploy = async () => {
 
   // If we have the hub tool
   if (commandExistsSync('hub')) {
-    const data = yaml.parse(fs.readFileSync(process.env.HOME + '/.config/hub', 'utf8'))
+    try {
+      const data = yaml.parse(fs.readFileSync(process.env.HOME + '/.config/hub', 'utf8'))
 
-    // Get the github account for the user
-    props.githubAccount = data['github.com'].map(entry => entry.user).filter(Boolean)[0]
+      // Get the github account for the user
+      props.githubAccount = data['github.com'].map(entry => entry.user).filter(Boolean)[0]
 
-    // Get the oauth token that hub uses
-    props.githubAuth = data['github.com'].map(entry => entry.oauth_token).filter(Boolean)[0]
+      // Get the oauth token that hub uses
+      props.githubAuth = data['github.com'].map(entry => entry.oauth_token).filter(Boolean)[0]
+    } catch (error) {
+      // Nothing to do
+    }
   }
 
   const deployToolChoices = [

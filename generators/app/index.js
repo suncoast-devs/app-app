@@ -1,6 +1,7 @@
 'use strict'
 
 const Generator = require('yeoman-generator')
+const inquirer = require('inquirer')
 const emptyDir = require('empty-dir')
 const chalk = require('chalk')
 const _ = require('lodash')
@@ -164,12 +165,27 @@ class AppApp extends Generator {
     }
   }
 
-  end () {
+  async end () {
     if (this.props.repo) {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('hub', ['create', '-h', '', this.appname])
+
+      let retry = false
+      do {
+        const result = this.spawnCommandSync('hub', ['create', '-h', '', this.appname])
+        if (result.status !== 0) {
+          const promptResult = await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'retry',
+              message: 'hub tool failed - try again?'
+            }
+          ])
+          retry = promptResult.retry
+        }
+      } while (retry)
+
       this.spawnCommandSync('git', ['push', '--set-upstream', 'origin', 'master'])
     }
 
