@@ -180,6 +180,7 @@ class AppApp extends Generator {
     console.log('We suggest that you begin by typing:')
     console.log()
     console.log(chalk.cyan('  cd'), path.basename(this.destinationRoot()))
+    console.log(chalk.cyan(' code .'))
     console.log(`  ${chalk.cyan(`${this.props.useYarn ? 'yarn' : 'npm'} start`)}`)
     console.log()
     console.log()
