@@ -1,5 +1,10 @@
 {
-  "devDependencies": ["browser-sync", "stylelint", "stylelint-config-standard"],
+  "devDependencies": [
+    "browser-sync",
+    "stylelint",
+    "stylelint-config-standard",
+    "prettier"
+  ],
   "dependencies": [],
   "deployDir": "public",
   "installFiles": {
