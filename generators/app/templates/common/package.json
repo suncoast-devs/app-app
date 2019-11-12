@@ -5,5 +5,13 @@
     "start": "browser-sync start --server public --files public",
     "deploy": "echo 'To setup deployment run: yarn setup-deploy'",
     "setup-deploy": "app-app --deploy && yarn deploy"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "useTabs": false
   }
 }

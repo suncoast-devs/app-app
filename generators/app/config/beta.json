@@ -8,7 +8,8 @@
     "eslint-plugin-promise",
     "eslint-plugin-import",
     "eslint-plugin-node",
-    "eslint-plugin-standard"
+    "eslint-plugin-standard",
+    "prettier"
   ],
   "dependencies": [],
   "deployDir": "public",
