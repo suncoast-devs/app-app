@@ -1,0 +1,26 @@
+{
+  "dependencies": [
+    "react",
+    "react-dom",
+    "react-scripts",
+    "json",
+    "react-router-dom"
+  ],
+  "devDependencies": ["stylelint", "stylelint-config-standard", "prettier"],
+  "deployDir": "build",
+  "installFiles": {
+    "gitignore": ".gitignore",
+    "package.json": "package.json",
+    "public/index.html": "public/index.html",
+    "public/manifest.json": "public/manifest.json",
+    "public/_redirects": "public/_redirects",
+    "src/App.jsx": "src/App.jsx",
+    "src/components/HelloWorld.jsx": "src/components/HelloWorld.jsx",
+    "src/pages/HomePage.jsx": "src/pages/HomePage.jsx",
+    "src/pages/NotFound.jsx": "src/pages/NotFound.jsx",
+    "src/pages/Page.jsx": "src/pages/Page.jsx",
+    "src/pages/Page2.jsx": "src/pages/Page2.jsx",
+    "src/index.css": "src/index.css",
+    "src/index.js": "src/index.js"
+  }
+}
