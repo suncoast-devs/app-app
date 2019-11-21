@@ -12,11 +12,11 @@ const commandExistsSync = require('command-exists').sync
 const isBinaryFile = require('isbinaryfile').isBinaryFile
 
 class AppApp extends Generator {
-  constructor(args, options) {
+  constructor (args, options) {
     super(args, options)
 
     this.props = {
-      useYarn: commandExistsSync('yarn'),
+      useYarn: commandExistsSync('yarn')
     }
 
     if (commandExistsSync('hub')) {
@@ -36,7 +36,7 @@ class AppApp extends Generator {
     this.appname = this.determineAppname()
   }
 
-  async prompting() {
+  async prompting () {
     let prompts = [
       {
         type: 'confirm',
@@ -45,22 +45,22 @@ class AppApp extends Generator {
           this.destinationRoot()
         )}) is ${chalk.red.bold('not')} empty. Should we bail?`,
         default: true,
-        when: () => !emptyDir.sync(this.destinationRoot()),
+        when: () => !emptyDir.sync(this.destinationRoot())
       },
       {
         type: 'input',
         name: 'title',
         message: `What's your project's title?`,
         default: _.startCase(this.appname),
-        when: props => !props.empty,
+        when: props => !props.empty
       },
       {
         type: 'confirm',
         name: 'repo',
         message: 'Create GitHub repository?',
         default: !getRepoInfo().sha,
-        when: props => !props.empty,
-      },
+        when: props => !props.empty
+      }
     ]
 
     if (this.options.stack) {
@@ -85,7 +85,7 @@ class AppApp extends Generator {
         name: 'stack',
         message: 'Which stack?',
         default: 'alpha',
-        choices: [..._.map(STACKS, (name, value) => ({ name, value }))],
+        choices: [..._.map(STACKS, (name, value) => ({ name, value }))]
       }).then(props => {
         this.options.stack = props.stack
       })
@@ -115,28 +115,28 @@ class AppApp extends Generator {
     return results
   }
 
-  get processUserName() {
+  get processUserName () {
     return (process.env.USER || process.env.UserName).replace(
       /[^a-zA-Z0-9+]/g,
       '-'
     )
   }
 
-  get username() {
+  get username () {
     return this.props ? this.props.uniqueUserName : this.processUserName
   }
 
-  get hostName() {
+  get hostName () {
     return `${this.appname}-${this.username}`
   }
 
-  get packageAppName() {
+  get packageAppName () {
     return `${_.kebabCase(this.appname)}`
   }
 
-  get writing() {
+  get writing () {
     return {
-      all() {
+      all () {
         const processInstallFiles = files => {
           Object.entries(files).forEach(entry => {
             const [source, dest] = entry
@@ -163,11 +163,11 @@ class AppApp extends Generator {
 
         processInstallFiles(this.stackCommonConfig.installFiles)
         processInstallFiles(this.stackConfig.installFiles)
-      },
+      }
     }
   }
 
-  install() {
+  install () {
     const installMethod = this.props.useYarn
       ? this.yarnInstall.bind(this)
       : this.npmInstall.bind(this)
@@ -195,7 +195,7 @@ class AppApp extends Generator {
     }
   }
 
-  end() {
+  end () {
     if (this.props.repo) {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
@@ -205,7 +205,7 @@ class AppApp extends Generator {
         'push',
         '--set-upstream',
         'origin',
-        'master',
+        'master'
       ])
     }
 
