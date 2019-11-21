@@ -83,7 +83,7 @@ class AppApp extends Generator {
       await this.prompt({
         type: 'list',
         name: 'stack',
-        message: 'local -Which stack?',
+        message: 'Which stack?',
         default: 'alpha',
         choices: [..._.map(STACKS, (name, value) => ({ name, value }))]
       }).then(props => {
