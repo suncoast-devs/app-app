@@ -10,6 +10,7 @@ const _ = require('lodash')
 const chalk = require('chalk')
 const axios = require('axios')
 const gitRemoteOriginUrl = require('git-remote-origin-url')
+const os = require('os')
 
 const deploy = async () => {
   const props = {
@@ -17,23 +18,32 @@ const deploy = async () => {
     haveGitHubPages: commandExistsSync('gh-pages'),
     haveSurge: commandExistsSync('surge'),
     appName: packageJson.name.toLowerCase(),
-    userName: (process.env.USER || process.env.UserName).replace(/[^a-zA-Z0-9+]/g, '-').toLowerCase()
+    userName: (process.env.USER || process.env.UserName)
+      .replace(/[^a-zA-Z0-9+]/g, '-')
+      .toLowerCase()
   }
 
   // If we have the hub tool
   if (commandExistsSync('hub')) {
-    const data = yaml.parse(fs.readFileSync(process.env.HOME + '/.config/hub', 'utf8'))
+    const data = yaml.parse(
+      fs.readFileSync(os.homedir() + '/.config/hub', 'utf8')
+    )
 
     // Get the github account for the user
-    props.githubAccount = data['github.com'].map(entry => entry.user).filter(Boolean)[0]
+    props.githubAccount = data['github.com']
+      .map(entry => entry.user)
+      .filter(Boolean)[0]
 
     // Get the oauth token that hub uses
-    props.githubAuth = data['github.com'].map(entry => entry.oauth_token).filter(Boolean)[0]
+    props.githubAuth = data['github.com']
+      .map(entry => entry.oauth_token)
+      .filter(Boolean)[0]
   }
 
   const deployToolChoices = [
     props.haveNetlify && { name: 'Netlify', value: 'netlify' },
-    props.haveGitHubPages && props.githubAccount && { name: 'GitHub Pages', value: 'gh-pages' },
+    props.haveGitHubPages &&
+      props.githubAccount && { name: 'GitHub Pages', value: 'gh-pages' },
     props.haveSurge && { name: 'Surge', value: 'surge' },
     { name: 'None', value: 'none' }
   ].filter(Boolean)
@@ -63,7 +73,9 @@ const deploy = async () => {
       packageJson.homepage = `https://${props.appName}-${props.userName}.surge.sh`
       break
     case 'gh-pages':
-      packageJson.homepage = `https://${props.githubAccount.toLowerCase()}.github.io/${props.appName}`
+      packageJson.homepage = `https://${props.githubAccount.toLowerCase()}.github.io/${
+        props.appName
+      }`
       break
     case 'netlify':
       packageJson.homepage = `https://${props.appName}-${props.userName}.netlify.com`
@@ -105,20 +117,36 @@ const deploy = async () => {
       break
     case 'netlify':
       // Use the netlify command to create a new site
-      const createResult = spawnCommandSync('netlify', ['sites:create', '--name', `${props.appName}-${props.userName}`])
+      const createResult = spawnCommandSync('netlify', [
+        'sites:create',
+        '--name',
+        `${props.appName}-${props.userName}`
+      ])
 
       // If this failed, warn the user and exit
       if (createResult.status !== 0) {
-        console.log(chalk.red('Could not configure netlify, please see output for instructions'))
+        console.log(
+          chalk.red(
+            'Could not configure netlify, please see output for instructions'
+          )
+        )
         return
       }
 
       // Use the netlify command to link the site
-      const linkResult = spawnCommandSync('netlify', ['link', '--name', `${props.appName}-${props.userName}`])
+      const linkResult = spawnCommandSync('netlify', [
+        'link',
+        '--name',
+        `${props.appName}-${props.userName}`
+      ])
 
       // If this failed, warn the user and exit
       if (linkResult.status !== 0) {
-        console.log(chalk.red('Could not configure netlify, please see output for instructions'))
+        console.log(
+          chalk.red(
+            'Could not configure netlify, please see output for instructions'
+          )
+        )
         return
       }
 
@@ -151,18 +179,26 @@ const deploy = async () => {
           console.log(chalk.red(`Received ${error} error from github`))
         })
     } catch (error) {
-      console.log(chalk.red(`No github homepage configured, you'll have to do this manually later`))
+      console.log(
+        chalk.red(
+          `No github homepage configured, you'll have to do this manually later`
+        )
+      )
     }
   }
 
   // Write out a new package.json file
-  fs.writeFile(localPackageJSONPath, JSON.stringify(packageJson, null, 2), error => {
-    if (error) {
-      console.log(chalk.red(error))
-    } else {
-      console.log(chalk.green(`Now configured to use ${answers.deployTool}.`))
+  fs.writeFile(
+    localPackageJSONPath,
+    JSON.stringify(packageJson, null, 2),
+    error => {
+      if (error) {
+        console.log(chalk.red(error))
+      } else {
+        console.log(chalk.green(`Now configured to use ${answers.deployTool}.`))
+      }
     }
-  })
+  )
 }
 
 deploy()
