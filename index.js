@@ -28,10 +28,13 @@ let command = new commander.Command(packageJson.name)
   })
 
 // Generate a list of stacks dynamically from the STACKS JSON
-Object.entries(STACKS).forEach(stackDetails => {
-  const [stack, description] = stackDetails
+Object.entries(STACKS).forEach(stack => {
+  const [stackName, stackDetails] = stack
 
-  command = command.option(`-${stack[0]}, --${stack}`, description)
+  command = command.option(
+    `-${stackDetails.option}, --${stackName}`,
+    stackDetails.title
+  )
 })
 
 const program = command.parse(process.argv)

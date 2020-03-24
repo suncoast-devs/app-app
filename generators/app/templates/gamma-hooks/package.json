@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "<%= packageAppName %>",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "react-scripts build",
+    "deploy": "echo 'To setup deployment run: yarn setup-deploy'",
+    "setup-deploy": "app-app --deploy && yarn deploy",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false
+  }
+}
