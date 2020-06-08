@@ -60,11 +60,5 @@
     "type": "git",
     "url": "git+https://github.com/suncoast-devs/app-app.git"
   },
-  "license": "MIT",
-  "resolutions": {
-    "shelljs": "0.8.4"
-  },
-  "scripts": {
-    "preinstall": "npx npm-force-resolutions"
-  }
+  "license": "MIT"
 }
