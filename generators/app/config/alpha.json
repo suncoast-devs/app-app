@@ -3,7 +3,8 @@
     "browser-sync",
     "stylelint",
     "stylelint-config-standard",
-    "prettier"
+    "prettier",
+    "eslint-config-prettier"
   ],
   "dependencies": [],
   "deployDir": "public",
