@@ -11,7 +11,7 @@
     "tabWidth": 2,
     "semi": false,
     "singleQuote": true,
-    "jsxSingleQuote": true,
-    "useTabs": false
+    "useTabs": false,
+    "arrowParens": "avoid"
   }
 }
