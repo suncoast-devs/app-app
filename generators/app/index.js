@@ -85,12 +85,7 @@ class AppApp extends Generator {
         name: 'stack',
         message: 'Which stack?',
         default: 'alpha',
-        choices: [
-          ..._.map(Object.keys(STACKS), name => ({
-            name: STACKS[name].title,
-            value: name,
-          })),
-        ],
+        choices: [..._.map(STACKS, (name, value) => ({ name, value }))],
       }).then(props => {
         this.options.stack = props.stack
       })
@@ -220,11 +215,9 @@ class AppApp extends Generator {
     console.log()
     console.log('We suggest that you begin by typing:')
     console.log()
-    console.log(chalk.cyan('  cd'), path.basename(this.destinationRoot()))
-    console.log(chalk.cyan(' code .'))
-    console.log(
-      `  ${chalk.cyan(`${this.props.useYarn ? 'yarn' : 'npm'} start`)}`
-    )
+    console.log(`  cd ${path.basename(this.destinationRoot())}`)
+    console.log('  code .')
+    console.log(`  ${this.props.useYarn ? 'yarn' : 'npm'} start`)
     console.log()
     console.log()
   }
