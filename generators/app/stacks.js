@@ -1,27 +1,20 @@
 module.exports = {
   alpha: {
-    title: 'ALPHA: Vanilla stack with HTML, CSS, linting, and BrowserSync',
-    option: '-a',
+    title: 'ALPHA:       Vanilla stack with HTML, CSS, linting, and BrowserSync',
   },
   beta: {
-    title:
-      'BETA:  Vanilla stack with HTML, CSS, linting, JavaScript and BrowserSync',
-    option: '-b',
+    title: 'BETA:        Vanilla stack with HTML, CSS, linting, JavaScript and BrowserSync',
   },
   gamma: {
-    title: 'GAMMA: React stack',
-    option: '-g',
+    title: 'GAMMA:       React stack',
   },
   'gamma-hooks': {
     title: 'GAMMA HOOKS: React stack with hooks',
-    option: '-gh',
   },
   delta: {
-    title: 'DELTA: React stack and React Router',
-    option: '-t',
+    title: 'DELTA:       React stack and React Router',
   },
   'delta-hooks': {
     title: 'DELTA HOOKS: React stack and React Router with hooks',
-    option: '-th',
   },
 }
