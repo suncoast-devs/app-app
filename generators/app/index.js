@@ -66,9 +66,7 @@ class AppApp extends Generator {
     if (this.options.stack) {
       if (STACKS.hasOwnProperty(this.options.stack)) {
         this.log(
-          `Using ${chalk.yellow.bold(this.options.stack.toUpperCase())}: ${
-            STACKS[this.options.stack]
-          }`
+          `Using ${chalk.yellow.bold(STACKS[this.options.stack].title.replace(/ +/, ' ').toUpperCase())}`
         )
       } else {
         this.log(
@@ -85,7 +83,7 @@ class AppApp extends Generator {
         name: 'stack',
         message: 'Which stack?',
         default: 'alpha',
-        choices: [..._.map(STACKS, (name, value) => ({ name, value }))],
+        choices: Object.entries(STACKS).map(([name, details]) => ({ name: details.title, value: name })),
       }).then(props => {
         this.options.stack = props.stack
       })

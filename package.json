@@ -26,9 +26,11 @@
   ],
   "dependencies": {
     "axios": "^0.19.2",
+    "camelize": "^1.0.0",
     "chalk": "^4.0.0",
     "command-exists": "^1.2.9",
     "commander": "^5.1.0",
+    "decamelize": "^4.0.0",
     "empty-dir": "^2.0.0",
     "fs-extra": "^9.0.1",
     "git-remote-origin-url": "^3.1.0",
