@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Page2 = () => {
+function Page2() {
   return <div>This is another Page</div>
 }
 

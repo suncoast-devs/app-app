@@ -5,7 +5,7 @@ import Page2 from './pages/Page2'
 import HomePage from './pages/HomePage'
 import NotFound from './pages/NotFound'
 
-const App = () => {
+function App() {
   return (
     <Router>
       <header>
