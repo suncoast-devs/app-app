@@ -61,7 +61,8 @@ if (program.deploy) {
   return
 }
 
-const stack = decamelize(_.findKey(_.pick(program, _.keys(STACKS).map(stack => camelCase(stack)))), '-')
+const stackOption = _.findKey(_.pick(program, _.keys(STACKS).map(stack => camelCase(stack))))
+const stack = stackOption ? decamelize(stackOption, '-') : undefined
 
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
