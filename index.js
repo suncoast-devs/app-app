@@ -41,6 +41,11 @@ Object.entries(STACKS).forEach(stack => {
 
 const program = command.parse(process.argv)
 
+if (program.deploy) {
+  require('./deploy')
+  return
+}
+
 if (typeof projectName === 'undefined') {
   console.error('Please specify the project directory:')
   console.log(
@@ -54,11 +59,6 @@ if (typeof projectName === 'undefined') {
     `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
   )
   process.exit(1)
-}
-
-if (program.deploy) {
-  require('./deploy')
-  return
 }
 
 const stackOption = _.findKey(_.pick(program, _.keys(STACKS).map(stack => camelCase(stack))))
