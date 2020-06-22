@@ -8,8 +8,8 @@
     "public/index.html": "public/index.html",
     "public/manifest.json": "public/manifest.json",
     "public/_redirects": "public/_redirects",
-    "src/App.js": "src/App.js",
-    "src/components/HelloWorld.js": "src/components/HelloWorld.js",
+    "src/App.jsx": "src/App.jsx",
+    "src/components/HelloWorld.jsx": "src/components/HelloWorld.jsx",
     "src/index.css": "src/index.css",
     "src/index.js": "src/index.js"
   }
