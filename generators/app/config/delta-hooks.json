@@ -15,11 +15,8 @@
     "public/manifest.json": "public/manifest.json",
     "public/_redirects": "public/_redirects",
     "src/App.jsx": "src/App.jsx",
-    "src/components/HelloWorld.jsx": "src/components/HelloWorld.jsx",
-    "src/pages/HomePage.jsx": "src/pages/HomePage.jsx",
-    "src/pages/NotFound.jsx": "src/pages/NotFound.jsx",
-    "src/pages/Page.jsx": "src/pages/Page.jsx",
-    "src/pages/Page2.jsx": "src/pages/Page2.jsx",
+    "src/components/.keep": "src/components/.keep",
+    "src/pages/.keep": "src/pages/.keep",
     "src/index.css": "src/index.css",
     "src/index.js": "src/index.js"
   }

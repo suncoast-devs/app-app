@@ -1,9 +1,5 @@
 import React from 'react'
 import { Link, Route, Switch } from 'react-router-dom'
-import Page from './pages/Page'
-import Page2 from './pages/Page2'
-import HomePage from './pages/HomePage'
-import NotFound from './pages/NotFound'
 
 function App() {
   return (
@@ -25,10 +21,16 @@ function App() {
         </nav>
       </header>
       <Switch>
-        <Route exact path="/" component={HomePage}></Route>
-        <Route exact path="/1" component={Page}></Route>
-        <Route exact path="/2" component={Page2}></Route>
-        <Route path="*" component={NotFound}></Route>
+        <Route exact path="/">
+          Home
+        </Route>
+        <Route exact path="/1">
+          Page 1
+        </Route>
+        <Route exact path="/2">
+          Page 2
+        </Route>
+        <Route path="*">Not Found</Route>
       </Switch>
     </>
   )

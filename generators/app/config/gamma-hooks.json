@@ -9,7 +9,7 @@
     "public/manifest.json": "public/manifest.json",
     "public/_redirects": "public/_redirects",
     "src/App.jsx": "src/App.jsx",
-    "src/components/HelloWorld.jsx": "src/components/HelloWorld.jsx",
+    "src/components/.keep": "src/components/.keep",
     "src/index.css": "src/index.css",
     "src/index.js": "src/index.js"
   }
