@@ -1,5 +1,5 @@
 {
-  "dependencies": ["react", "react-dom", "react-scripts", "json"],
+  "dependencies": ["react", "react-dom", "react-scripts", "json", "node-sass"],
   "devDependencies": ["stylelint", "stylelint-config-standard", "prettier"],
   "deployDir": "build",
   "installFiles": {
@@ -10,7 +10,7 @@
     "public/_redirects": "public/_redirects",
     "src/App.jsx": "src/App.jsx",
     "src/components/.keep": "src/components/.keep",
-    "src/index.css": "src/index.css",
+    "src/index.scss": "src/index.scss",
     "src/index.js": "src/index.js"
   }
 }
