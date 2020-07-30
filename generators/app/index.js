@@ -16,7 +16,7 @@ class AppApp extends Generator {
     super(args, options)
 
     this.props = {
-      useYarn: commandExistsSync('yarn'),
+      useYarn: false,
     }
 
     if (commandExistsSync('hub')) {
@@ -52,21 +52,23 @@ class AppApp extends Generator {
         name: 'title',
         message: `What's your project's title?`,
         default: _.startCase(this.appname),
-        when: props => !props.empty,
+        when: (props) => !props.empty,
       },
       {
         type: 'confirm',
         name: 'repo',
         message: 'Create GitHub repository?',
         default: !getRepoInfo().sha,
-        when: props => !props.empty,
+        when: (props) => !props.empty,
       },
     ]
 
     if (this.options.stack) {
       if (STACKS.hasOwnProperty(this.options.stack)) {
         this.log(
-          `Using ${chalk.yellow.bold(STACKS[this.options.stack].title.replace(/ +/, ' ').toUpperCase())}`
+          `Using ${chalk.yellow.bold(
+            STACKS[this.options.stack].title.replace(/ +/, ' ').toUpperCase()
+          )}`
         )
       } else {
         this.log(
@@ -83,8 +85,11 @@ class AppApp extends Generator {
         name: 'stack',
         message: 'Which stack?',
         default: 'alpha',
-        choices: Object.entries(STACKS).map(([name, details]) => ({ name: details.title, value: name })),
-      }).then(props => {
+        choices: Object.entries(STACKS).map(([name, details]) => ({
+          name: details.title,
+          value: name,
+        })),
+      }).then((props) => {
         this.options.stack = props.stack
       })
     }
@@ -100,7 +105,7 @@ class AppApp extends Generator {
       )
     )
 
-    const results = this.prompt(prompts).then(props => {
+    const results = this.prompt(prompts).then((props) => {
       if (props.empty) {
         this.log(`Whew... ${chalk.green('that was a close one.')} Bye!`)
         process.exit(0)
@@ -132,17 +137,21 @@ class AppApp extends Generator {
     return `${_.kebabCase(this.appname)}`
   }
 
+  get packageManagerRun() {
+    return this.props.useYarn ? 'yarn' : 'npm run'
+  }
+
   get writing() {
     return {
       all() {
-        const processInstallFiles = files => {
-          Object.entries(files).forEach(entry => {
+        const processInstallFiles = (files) => {
+          Object.entries(files).forEach((entry) => {
             const [source, dest] = entry
 
             const data = fs.readFileSync(this.templatePath(source))
             const stat = fs.lstatSync(this.templatePath(source))
 
-            isBinaryFile(data, stat.size).then(isBinary => {
+            isBinaryFile(data, stat.size).then((isBinary) => {
               if (isBinary) {
                 this.fs.copy(
                   this.templatePath(source),
