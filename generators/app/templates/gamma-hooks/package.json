@@ -21,7 +21,6 @@
     "tabWidth": 2,
     "semi": false,
     "singleQuote": true,
-    "useTabs": false,
-    "arrowParens": "avoid"
+    "useTabs": false
   }
 }
