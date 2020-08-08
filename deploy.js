@@ -78,7 +78,7 @@ const deploy = async () => {
       }`
       break
     case 'netlify':
-      packageJson.homepage = `https://${props.appName}-${props.userName}.netlify.com`
+      packageJson.homepage = `https://${props.appName}-${props.userName}.netlify.app`
       break
   }
 
