@@ -9,6 +9,7 @@
     "eslint-plugin-import",
     "eslint-plugin-node",
     "eslint-plugin-standard",
+    "eslint-config-prettier",
     "prettier"
   ],
   "dependencies": [],

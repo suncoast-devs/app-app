@@ -4,6 +4,8 @@
 const _ = require('lodash')
 const chalk = require('chalk')
 const commander = require('commander')
+const camelCase = require('camelcase')
+const decamelize = require('decamelize')
 
 const yeoman = require('yeoman-environment')
 const env = yeoman.createEnv()
@@ -17,10 +19,10 @@ let projectName
 
 let command = new commander.Command(packageJson.name)
   .version(packageJson.version)
-  .arguments('<project-directory>')
+  .arguments('project-directory')
   .usage(`${chalk.green('<project-directory>')} [options]`)
-  .action(name => {
-    projectName = name
+  .action((_,projectDirectory) => {
+    projectName = projectDirectory && projectDirectory[0]
   })
   .option('--deploy', 'Configure Deployment')
   .on('--help', () => {
@@ -28,10 +30,13 @@ let command = new commander.Command(packageJson.name)
   })
 
 // Generate a list of stacks dynamically from the STACKS JSON
-Object.entries(STACKS).forEach(stackDetails => {
-  const [stack, description] = stackDetails
+Object.entries(STACKS).forEach(stack => {
+  const [stackName, stackDetails] = stack
 
-  command = command.option(`-${stack[0]}, --${stack}`, description)
+  command = command.option(
+    `--${stackName}`,
+    stackDetails.title
+  )
 })
 
 const program = command.parse(process.argv)
@@ -56,7 +61,8 @@ if (typeof projectName === 'undefined') {
   process.exit(1)
 }
 
-const stack = _.findKey(_.pick(program, _.keys(STACKS)))
+const stackOption = _.findKey(_.pick(program, _.keys(STACKS).map(stack => camelCase(stack))))
+const stack = stackOption ? decamelize(stackOption, '-') : undefined
 
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
