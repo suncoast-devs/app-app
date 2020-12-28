@@ -1,5 +1,5 @@
 {
-  "dependencies": ["react", "react-dom", "react-scripts", "json", "node-sass"],
+  "dependencies": ["react", "react-dom", "react-scripts", "json", "sass"],
   "devDependencies": ["stylelint", "stylelint-config-standard", "prettier"],
   "deployDir": "build",
   "installFiles": {

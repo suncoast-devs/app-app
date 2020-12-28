@@ -5,7 +5,7 @@
     "react-scripts",
     "json",
     "react-router-dom",
-    "node-sass"
+    "sass"
   ],
   "devDependencies": ["stylelint", "stylelint-config-standard", "prettier"],
   "deployDir": "build",
