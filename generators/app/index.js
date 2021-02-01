@@ -209,12 +209,7 @@ class AppApp extends Generator {
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
       this.spawnCommandSync('hub', ['create', '-h', '', this.appname])
-      this.spawnCommandSync('git', [
-        'push',
-        '--set-upstream',
-        'origin',
-        'master',
-      ])
+      this.spawnCommandSync('git', ['push'])
     }
 
     console.log()
