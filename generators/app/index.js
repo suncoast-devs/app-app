@@ -185,13 +185,6 @@ class AppApp extends Generator {
     const devDependencies = this.stackConfig.devDependencies || []
     const dependencies = this.stackConfig.dependencies || []
 
-    this.log(
-      `Installing development dependencies... ${chalk.cyan(
-        devDependencies.join(', ')
-      )}`
-    )
-    installMethod(devDependencies, devInstallOptions)
-
     if (dependencies.length > 0) {
       this.log(
         `Installing runtime dependencies... ${chalk.cyan(
@@ -200,6 +193,14 @@ class AppApp extends Generator {
       )
       installMethod(dependencies)
     }
+
+    this.log(
+      `Installing development dependencies... ${chalk.cyan(
+        devDependencies.join(', ')
+      )}`
+    )
+    installMethod(devDependencies, devInstallOptions)
+
   }
 
   end() {
