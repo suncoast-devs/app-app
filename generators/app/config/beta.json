@@ -15,6 +15,7 @@
   "dependencies": [],
   "deployDir": "public",
   "installFiles": {
+    "package.json": "package.json",
     "public/index.html": "public/index.html",
     "public/screen.css": "public/screen.css",
     "public/main.js": "public/main.js",

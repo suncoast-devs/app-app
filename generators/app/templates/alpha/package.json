@@ -2,7 +2,7 @@
   "private": true,
   "name": "<%= packageAppName %>",
   "scripts": {
-    "start": "browser-sync start --server public --files public",
+    "start": "parcel public/index.html",
     "deploy": "echo 'To setup deployment run: <%= packageManagerRun %> setup-deploy'",
     "setup-deploy": "app-app --deploy && <%= packageManagerRun %> deploy"
   },

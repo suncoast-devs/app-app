@@ -3,7 +3,6 @@
   "installFiles": {
     "../common/favicon.ico": "public/favicon.ico",
     "../common/gitignore": ".gitignore",
-    "../common/package.json": "package.json",
     "../common/README.md": "README.md"
   }
 }
