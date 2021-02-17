@@ -5,6 +5,7 @@
   "installFiles": {
     "gitignore": ".gitignore",
     "package.json": "package.json",
+    "jsconfig.json": "jsconfig.json",
     "public/index.html": "public/index.html",
     "public/manifest.json": "public/manifest.json",
     "public/_redirects": "public/_redirects",
