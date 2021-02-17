@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link, Route, Switch } from 'react-router-dom'
 
-class App extends Component {
+export class App extends Component {
   render() {
     return (
       <>
@@ -37,5 +37,3 @@ class App extends Component {
     )
   }
 }
-
-export default App

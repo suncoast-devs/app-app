@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Route, Switch } from 'react-router-dom'
 
-function App() {
+export function App() {
   return (
     <>
       <header>
@@ -35,5 +35,3 @@ function App() {
     </>
   )
 }
-
-export default App
