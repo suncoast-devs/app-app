@@ -1,6 +1,7 @@
 {
   "deployDir": "public",
   "installFiles": {
+    "../common/docs/button.png": "docs/button.png",
     "../common/favicon.ico": "public/favicon.ico",
     "../common/gitignore": ".gitignore",
     "../common/package.json": "package.json",
