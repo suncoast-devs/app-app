@@ -1,6 +1,6 @@
 {
   "dependencies": ["react", "react-dom", "react-scripts", "json", "sass"],
-  "devDependencies": ["stylelint", "stylelint-config-standard", "prettier"],
+  "devDependencies": ["prettier"],
   "deployDir": "build",
   "installFiles": {
     "gitignore": ".gitignore",

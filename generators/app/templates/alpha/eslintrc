@@ -1,7 +1,0 @@
-{
-  "extends": ["standard", "prettier"],
-  "rules": {
-    "comma-dangle": ["error", "only-multiline"]
-  }
-}
-

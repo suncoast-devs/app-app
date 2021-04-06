@@ -7,7 +7,7 @@
     "react-router-dom",
     "sass"
   ],
-  "devDependencies": ["stylelint", "stylelint-config-standard", "prettier"],
+  "devDependencies": ["prettier"],
   "deployDir": "build",
   "installFiles": {
     "gitignore": ".gitignore",

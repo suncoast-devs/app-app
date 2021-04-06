@@ -13,33 +13,37 @@ To generate your new project:
 app-app cool-project-name
 cd cool-project-name
 
-atom .
+code .
 npm start
 ```
 
-For the `alpha` stack, you might want to install `tidy-html5`, and the [Tidy Linter](https://atom.io/packages/linter-tidy) for Atom:
-
-```bash
-brew install tidy-html5
-```
-
-For deployment, install either the `gh-pages` or `netlify-cli` to your global packages. Example: `npm -g install netlify-cli`
+For deployment, install either `surge`, `gh-pages`, or `netlify-cli` to your global packages. Example: `npm -g install netlify-cli`
 
 #### ALPHA
 
 * BrowserSync
-* Deployment via GitHub Pages or Netlify
-* Linting in Atom with `stylelint` and `htmlhint`
+* Deployment via Surge, GitHub Pages, or Netlify
 
 #### BETA
 
 * Everything in the `alpha` stack
 * JavaScript (ES2015)
-* Linting in Atom with `eslint` using JS Standard
 
-### TODO
+#### DELTA
 
-* [ ] CLI lint and warnings before deploy
+* React with Classes
+
+#### DELTA-HOOKS
+
+* React with hooks
+
+#### GAMMA
+
+* React with Classes and react-router
+
+#### GAMMA-HOOKS
+
+* React with hooks and react-router
 
 ## License
 
