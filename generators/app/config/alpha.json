@@ -1,17 +1,9 @@
 {
-  "devDependencies": [
-    "browser-sync",
-    "stylelint",
-    "stylelint-config-standard",
-    "prettier",
-    "eslint-config-prettier"
-  ],
+  "devDependencies": ["browser-sync", "prettier"],
   "dependencies": [],
   "deployDir": "public",
   "installFiles": {
     "public/index.html": "public/index.html",
-    "public/screen.css": "public/screen.css",
-    "stylelintrc": ".stylelintrc",
-    "eslintrc": ".eslintrc"
+    "public/screen.css": "public/screen.css"
   }
 }
