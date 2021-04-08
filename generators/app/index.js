@@ -191,7 +191,9 @@ class AppApp extends Generator {
           dependencies.join(', ')
         )}`
       )
-      installMethod(dependencies)
+      dependencies.forEach((dependency) => {
+        installMethod(dependency)
+      })
     }
 
     this.log(
@@ -199,7 +201,9 @@ class AppApp extends Generator {
         devDependencies.join(', ')
       )}`
     )
-    installMethod(devDependencies, devInstallOptions)
+    devDependencies.forEach((dependency) => {
+      installMethod(dependency, devInstallOptions)
+    })
   }
 
   end() {
