@@ -20,15 +20,22 @@ class AppApp extends Generator {
     }
 
     if (commandExistsSync('hub')) {
-      this.props.uniqueUserName = require('child_process')
-        .spawnSync('hub', ['config', '--get', 'github.user'])
-        .stdout.toString()
-        .replace(/\n/, '')
-        .replace(/ /, '')
+      try {
+        const hubApiResponseString = require('child_process')
+          .spawnSync('hub', ['api', 'user'])
+          .stdout.toString()
+          .replace(/\n/, '')
+
+        this.props.uniqueUserName = JSON.parse(
+          hubApiResponseString || '{}'
+        ).login
+      } catch {
+        // Nothing to do, this.props.uniqueUserName will remain empty
+      }
     }
 
     if (!this.props.uniqueUserName || this.props.uniqueUserName.length === 0) {
-      this.props.uniqueUserName = this.processUserName
+      this.props.uniqueUserName = _.kebabCase(this.processUserName)
     }
 
     this.argument('stack', { type: String, required: false })
