@@ -214,12 +214,29 @@ class AppApp extends Generator {
   }
 
   end() {
+    const projectPath = path.basename(this.destinationRoot())
+
     if (this.props.repo) {
       this.spawnCommandSync('git', ['init'])
       this.spawnCommandSync('git', ['add', '--all'])
       this.spawnCommandSync('git', ['commit', '--message', '"Hello, App App!"'])
-      this.spawnCommandSync('sdg', ['hubCreate', this.appname])
-      this.spawnCommandSync('git', ['push'])
+
+      if (commandExistsSync('sdg')) {
+        this.spawnCommandSync('sdg', ['hubCreate', this.appname])
+        this.spawnCommandSync('git', ['push'])
+      } else {
+        console.log()
+        console.log()
+        console.log(
+          'WARNING: The `sdg` helper tool was not found so no github repository created'
+        )
+        console.log()
+        console.log(
+          `To fix this, install the sdg helper tool, then \`cd ${projectPath}\`, then \`sdg create\``
+        )
+        console.log()
+        console.log()
+      }
     }
 
     console.log()
@@ -228,7 +245,7 @@ class AppApp extends Generator {
     console.log()
     console.log('We suggest that you begin by typing:')
     console.log()
-    console.log(`  cd ${path.basename(this.destinationRoot())}`)
+    console.log(`  cd ${projectPath}`)
     console.log('  code .')
     console.log(`  ${this.props.useYarn ? 'yarn' : 'npm'} start`)
     console.log()
