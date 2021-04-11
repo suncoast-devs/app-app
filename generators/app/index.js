@@ -223,7 +223,7 @@ class AppApp extends Generator {
 
       if (commandExistsSync('sdg')) {
         this.spawnCommandSync('sdg', ['hubCreate', this.appname])
-        this.spawnCommandSync('git', ['push'])
+        this.spawnCommandSync('git', ['push', '-u', 'origin', 'HEAD'])
       } else {
         console.log()
         console.log()
