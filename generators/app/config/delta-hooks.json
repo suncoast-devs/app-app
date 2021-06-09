@@ -18,6 +18,7 @@
     "vite.config.js": "vite.config.js",
     "src/App.jsx": "src/App.jsx",
     "src/components/.keep": "src/components/.keep",
+    "src/pages/.keep": "src/pages/.keep",
     "src/index.scss": "src/index.scss",
     "src/main.jsx": "src/main.jsx"
   }

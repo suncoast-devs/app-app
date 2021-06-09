@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link, Route, Switch } from 'react-router-dom'
 
-export class App extends Component {
+export class App extends React.Component {
   render() {
     return (
       <>
