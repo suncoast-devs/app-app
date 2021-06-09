@@ -2,13 +2,11 @@
   "private": true,
   "name": "<%= packageAppName %>",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "predeploy": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
     "deploy": "echo 'To setup deployment run: <%= packageManagerRun %> setup-deploy'",
-    "setup-deploy": "app-app --deploy && <%= packageManagerRun %> deploy",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "setup-deploy": "app-app --deploy && <%= packageManagerRun %> deploy"
   },
   "browserslist": [
     ">0.2%",
@@ -21,7 +19,6 @@
     "tabWidth": 2,
     "semi": false,
     "singleQuote": true,
-    "useTabs": false,
-    "arrowParens": "avoid"
+    "useTabs": false
   }
 }

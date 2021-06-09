@@ -1,17 +1,22 @@
 {
-  "dependencies": ["react", "react-dom", "react-scripts", "json", "sass"],
+  "dependencies": [
+    "vite",
+    "@vitejs/plugin-react-refresh",
+    "react",
+    "react-dom",
+    "sass"
+  ],
   "devDependencies": ["prettier"],
   "deployDir": "build",
   "installFiles": {
     "gitignore": ".gitignore",
-    "package.json": "package.json",
+    "index.html": "index.html",
     "jsconfig.json": "jsconfig.json",
-    "public/index.html": "public/index.html",
-    "public/manifest.json": "public/manifest.json",
-    "public/_redirects": "public/_redirects",
+    "package.json": "package.json",
+    "vite.config.js": "vite.config.js",
     "src/App.jsx": "src/App.jsx",
     "src/components/.keep": "src/components/.keep",
     "src/index.scss": "src/index.scss",
-    "src/index.js": "src/index.js"
+    "src/main.jsx": "src/main.jsx"
   }
 }

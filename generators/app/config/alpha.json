@@ -1,9 +1,19 @@
 {
-  "devDependencies": ["browser-sync", "prettier"],
+  "devDependencies": ["vite", "prettier"],
   "dependencies": [],
-  "deployDir": "public",
+  "deployDir": "dist",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "echo 'To setup deployment run: <%= packageManagerRun %> setup-deploy'",
+    "setup-deploy": "app-app --deploy && <%= packageManagerRun %> deploy"
+  },
   "installFiles": {
-    "public/index.html": "public/index.html",
-    "public/screen.css": "public/screen.css"
+    "index.html": "index.html",
+    "screen.css": "screen.css",
+    "favicon.ico": "favicon.ico",
+    "main.js": "main.js"
   }
 }

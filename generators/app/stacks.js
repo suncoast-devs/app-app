@@ -1,9 +1,11 @@
 module.exports = {
   alpha: {
-    title: 'ALPHA:       Vanilla stack with HTML, CSS, linting, and BrowserSync',
+    title:
+      'ALPHA:       Vanilla stack with HTML, CSS, linting, and code reloading',
   },
   beta: {
-    title: 'BETA:        Vanilla stack with HTML, CSS, linting, JavaScript and BrowserSync',
+    title:
+      'BETA:        Vanilla stack with HTML, CSS, linting, JavaScript and code reloading',
   },
   gamma: {
     title: 'GAMMA:       React stack',

@@ -21,29 +21,29 @@ For deployment, install either `surge`, `gh-pages`, or `netlify-cli` to your glo
 
 #### ALPHA
 
-* BrowserSync
-* Deployment via Surge, GitHub Pages, or Netlify
+- Vite
+- Deployment via Surge, GitHub Pages, or Netlify
 
 #### BETA
 
-* Everything in the `alpha` stack
-* JavaScript (ES2015)
+- Everything in the `alpha` stack
+- JavaScript (ES2015)
 
 #### DELTA
 
-* React with Classes
+- React with Classes
 
 #### DELTA-HOOKS
 
-* React with hooks
+- React with hooks
 
 #### GAMMA
 
-* React with Classes and react-router
+- React with Classes and react-router
 
 #### GAMMA-HOOKS
 
-* React with hooks and react-router
+- React with hooks and react-router
 
 ## License
 
