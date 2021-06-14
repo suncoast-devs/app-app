@@ -1,5 +1,10 @@
 {
-  "devDependencies": ["vite", "prettier", "typescript"],
+  "devDependencies": [
+    "vite",
+    "prettier",
+    "typescript",
+    "vite-plugin-ts-checker"
+  ],
   "dependencies": [],
   "deployDir": "dist",
   "scripts": {
@@ -14,6 +19,7 @@
     "screen.css": "screen.css",
     "favicon.ico": "favicon.ico",
     "main.ts": "main.ts",
-    "tsconfig.json": "tsconfig.json"
+    "tsconfig.json": "tsconfig.json",
+    "vite.config.js": "vite.config.js"
   }
 }

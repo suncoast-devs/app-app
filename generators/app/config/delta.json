@@ -1,16 +1,12 @@
 {
-  "dependencies": [
+  "dependencies": ["react", "react-dom", "react-router", "react-router-dom"],
+  "devDependencies": [
     "vite",
     "@vitejs/plugin-react-refresh",
-    "react",
-    "react-dom",
-    "react-router",
-    "react-router-dom",
-    "sass",
-    "typescript"
-  ],
-  "devDependencies": [
+    "vite-plugin-ts-checker",
     "prettier",
+    "typescript",
+    "sass",
     "@types/react",
     "@types/react-dom",
     "@types/react-router-dom"

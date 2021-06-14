@@ -1,13 +1,15 @@
 {
-  "dependencies": [
+  "dependencies": ["react", "react-dom"],
+  "devDependencies": [
+    "prettier",
     "vite",
     "@vitejs/plugin-react-refresh",
-    "react",
-    "react-dom",
+    "vite-plugin-ts-checker",
+    "@types/react",
+    "@types/react-dom",
     "sass",
     "typescript"
   ],
-  "devDependencies": ["prettier", "@types/react", "@types/react-dom"],
   "deployDir": "build",
   "installFiles": {
     "gitignore": ".gitignore",
