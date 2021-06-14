@@ -1,5 +1,5 @@
 {
-  "devDependencies": ["vite", "prettier"],
+  "devDependencies": ["vite", "prettier", "typescript"],
   "dependencies": [],
   "deployDir": "dist",
   "scripts": {
@@ -13,6 +13,7 @@
     "index.html": "index.html",
     "screen.css": "screen.css",
     "favicon.ico": "favicon.ico",
-    "main.js": "main.js"
+    "main.ts": "main.ts",
+    "tsconfig.json": "tsconfig.json"
   }
 }
